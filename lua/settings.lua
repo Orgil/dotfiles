@@ -13,6 +13,10 @@ opt.showtabline = 2
 opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true })
+opt.fillchars:append("fold:•")
+opt.foldlevelstart = 99
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.signcolumn = "yes"
 opt.backup = false
 opt.writebackup = false
@@ -46,6 +50,8 @@ if vim.fn.has("nvim-0.9.0") == 1 then
 	opt.splitkeep = "screen"
 	opt.shortmess:append({ C = true })
 end
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, { pattern = { "*" }, command = "normal zx" })
 
 -- Fix markdown indentation settings
 g.markdown_recommended_style = 0

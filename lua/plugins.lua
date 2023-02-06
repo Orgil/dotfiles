@@ -181,4 +181,26 @@ return {
 			require("dressing").setup()
 		end,
 	},
+	{
+		"anuvyklack/pretty-fold.nvim",
+		config = function()
+			require("pretty-fold").setup({
+				keep_indentation = true,
+				fill_char = "•",
+				sections = {
+					left = {
+						"content",
+					},
+					right = {
+						" ",
+						"number_of_folded_lines",
+						" ",
+						"••••",
+					},
+				},
+			})
+			map("n", "<space><space>", "za")
+			map("n", "za", "<Nop>")
+		end,
+	},
 }
