@@ -28,7 +28,7 @@ return {
 				-- |MiniIndentscope.gen_animation| for builtin options. To disable
 				-- animation, use `require('mini.indentscope').gen_animation.none()`.
 				--minidoc_replace_start animation = --<function: implements constant 20ms between steps>,
-				animation = function(s, n)
+				animation = function(_, _)
 					return 10
 				end,
 				--minidoc_replace_end
@@ -36,7 +36,17 @@ return {
 		},
 		config = function(_, opts)
 			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason", "" },
+				pattern = {
+					"help",
+					"alpha",
+					"dashboard",
+					"neo-tree",
+					"Trouble",
+					"lazy",
+					"mason",
+					"",
+					"neotest-summary",
+				},
 				callback = function()
 					vim.b.miniindentscope_disable = true
 				end,

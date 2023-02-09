@@ -78,8 +78,8 @@ return {
 				"<cmd>lua require'telescope.builtin'.buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
 			)
 			map("n", "<c-f>", "<cmd>Telescope live_grep<cr>")
-			map("n", "<leader>d", ":Telescope lsp_definitions theme=dropdown<CR>")
-			map("n", "<leader>t", ":Telescope lsp_type_definitions theme=dropdown<CR>")
+			-- map("n", "<leader>d", ":Telescope lsp_definitions theme=dropdown<CR>")
+			-- map("n", "<leader>t", ":Telescope lsp_type_definitions theme=dropdown<CR>")
 
 			require("telescope").load_extension("fzf")
 		end,
