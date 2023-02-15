@@ -203,4 +203,5 @@ return {
 			map("n", "za", "<Nop>")
 		end,
 	},
+	"towolf/vim-helm",
 }
