@@ -1,5 +1,3 @@
-local map = require("utils").map
-
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -48,6 +46,7 @@ return {
 			},
 			autoformat = true,
 			servers = {
+
 				jsonls = {
 					-- lazy-load schemastore when needed
 					on_new_config = function(new_config)
@@ -248,6 +247,12 @@ return {
 			},
 			ensure_installed = {
 				"stylua",
+				"codelldb",
+				"delve",
+				"goimports",
+				"golines",
+				"protolint",
+				"sql-formatter",
 			},
 		},
 		config = function(_, opts)
