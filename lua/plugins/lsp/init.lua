@@ -8,7 +8,7 @@ return {
 				"folke/neodev.nvim",
 				opts = {
 					experimental = { pathStrict = true },
-					library = { plugins = { "nvim-dap-ui", "neotest" }, types = true },
+					library = { plugins = { "nvim-dap-ui", "neotest" }, types = true, lazy = true },
 				},
 			},
 			"williamboman/mason.nvim",
@@ -66,6 +66,14 @@ return {
 				tsserver = {
 					flags = {
 						allow_incremental_sync = true,
+					},
+					handlers = {
+						-- pick the first response to a go to definition response. that way we go straight to the
+						-- source definition without needing to choose from the type definition .d.ts file
+						["textDocument/definition"] = function(err, result, ...)
+							result = vim.tbl_islist(result) and result[1] or result
+							vim.lsp.handlers["textDocument/definition"](err, result, ...)
+						end,
 					},
 				},
 				clangd = {
@@ -268,6 +276,7 @@ return {
 	},
 	{
 		"mfussenegger/nvim-dap",
+		lazy = true,
 		config = function()
 			local mason_registry = require("mason-registry")
 			local codelldb = mason_registry.get_package("codelldb") -- note that this will error if you provide a non-existent package name

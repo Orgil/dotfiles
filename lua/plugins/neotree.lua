@@ -97,6 +97,7 @@ return {
 							["mo"] = "system_open",
 						},
 					},
+					use_libuv_file_watcher = true,
 					commands = {
 						system_open = function(state)
 							local node = state.tree:get_node()

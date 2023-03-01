@@ -62,6 +62,7 @@ return {
 	{ "windwp/nvim-autopairs", config = true },
 	{
 		"folke/trouble.nvim",
+		lazy = true,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
 			indent_lines = false,
@@ -177,8 +178,18 @@ return {
 	},
 	{
 		"stevearc/dressing.nvim",
-		config = function()
-			require("dressing").setup()
+		lazy = true,
+		init = function()
+			---@diagnostic disable-next-line: duplicate-set-field
+			vim.ui.select = function(...)
+				require("lazy").load({ plugins = { "dressing.nvim" } })
+				return vim.ui.select(...)
+			end
+			---@diagnostic disable-next-line: duplicate-set-field
+			vim.ui.input = function(...)
+				require("lazy").load({ plugins = { "dressing.nvim" } })
+				return vim.ui.input(...)
+			end
 		end,
 	},
 	{
@@ -204,4 +215,30 @@ return {
 		end,
 	},
 	"towolf/vim-helm",
+	{
+		"folke/todo-comments.nvim",
+		config = function()
+			require("todo-comments").setup()
+		end,
+	},
+	-- {
+	-- 	"glepnir/lspsaga.nvim",
+	-- 	event = "BufRead",
+	-- 	config = function()
+	-- 		require("lspsaga").setup({
+	-- 			lightbulb = {
+	-- 				enable = false,
+	-- 				enable_in_insert = false,
+	-- 				sign = true,
+	-- 				sign_priority = 40,
+	-- 				virtual_text = true,
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- 	dependencies = {
+	-- 		{ "nvim-tree/nvim-web-devicons" },
+	-- 		--Please make sure you install markdown and markdown_inline parser
+	-- 		{ "nvim-treesitter/nvim-treesitter" },
+	-- 	},
+	-- },
 }
