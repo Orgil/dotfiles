@@ -10,7 +10,7 @@ opt.tabstop = 2
 opt.expandtab = true
 opt.softtabstop = 2
 opt.showtabline = 2
-opt.shiftround = true -- Round indent
+-- opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true })
 opt.fillchars:append("fold:•")
@@ -31,7 +31,7 @@ opt.hidden = true
 opt.clipboard = "unnamedplus"
 opt.ignorecase = true
 opt.smartcase = true
-opt.smartindent = true
+opt.cindent = true
 opt.termguicolors = true
 opt.splitright = true
 opt.splitbelow = true

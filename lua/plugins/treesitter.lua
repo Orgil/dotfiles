@@ -9,8 +9,8 @@ return {
 			{ "<bs>", desc = "Schrink selection", mode = "x" },
 		},
 		opts = {
-			highlight = { enable = true },
-			indent = { enable = true },
+			highlight = { enable = true, additional_vim_regex_highlighting = true },
+			indent = { enable = false },
 			context_commentstring = { enable = true, enable_autocmd = false },
 			ensure_installed = {
 				"bash",
@@ -36,7 +36,6 @@ return {
 				"gomod",
 				"gowork",
 				"gosum",
-				"graphql",
 				"graphql",
 				"help",
 				"html",
@@ -77,5 +76,5 @@ return {
 			require("nvim-treesitter.configs").setup(opts)
 		end,
 	},
-	{ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" },
+	-- { "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" },
 }
