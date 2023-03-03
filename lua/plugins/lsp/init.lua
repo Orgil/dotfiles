@@ -347,6 +347,7 @@ return {
 	},
 	{
 		"rcarriga/nvim-dap-ui",
+		lazy = true,
 		dependencies = { "mfussenegger/nvim-dap" },
 		config = function()
 			require("dapui").setup()
@@ -362,5 +363,5 @@ return {
 			end
 		end,
 	},
-	{ "theHamsta/nvim-dap-virtual-text", config = true },
+	{ "theHamsta/nvim-dap-virtual-text", config = true, lazy = true },
 }

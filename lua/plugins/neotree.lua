@@ -19,7 +19,7 @@ return {
 							-- filter using buffer options
 							bo = {
 								-- if the file type is one of following, the window will be ignored
-								filetype = { "neo-tree", "neo-tree-popup", "notify", "alpha" },
+								filetype = { "neo-tree", "neo-tree-popup", "notify" },
 
 								-- if the buffer type is one of following, the window will be ignored
 								buftype = { "terminal", "quickfix" },
@@ -55,7 +55,7 @@ return {
 						-- ["<cr>"] = "open_drop",
 						["t"] = "open_tab_drop",
 						["o"] = "open_with_window_picker",
-						["<cr>"] = "open_drop",
+						-- ["<cr>"] = "open_drop",
 						--["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
 						["ma"] = {
 							"add",

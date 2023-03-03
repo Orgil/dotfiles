@@ -1,6 +1,7 @@
 return {
 	{
 		"anuvyklack/hydra.nvim",
+		lazy = true,
 		config = function()
 			local Hydra = require("hydra")
 

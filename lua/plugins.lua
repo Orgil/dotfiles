@@ -88,6 +88,7 @@ return {
 	},
 	{
 		"folke/zen-mode.nvim",
+		lazy = true,
 		opts = {
 			window = { width = 160 },
 		},
@@ -174,6 +175,7 @@ return {
 	},
 	{
 		"mbbill/undotree",
+		lazy = true,
 		config = function()
 			vim.g.undotree_WindowLayout = 3
 			vim.g.undotree_SplitWidth = 60
@@ -205,6 +207,7 @@ return {
 	},
 	{
 		"anuvyklack/pretty-fold.nvim",
+		lazy = true,
 		config = function()
 			require("pretty-fold").setup({
 				keep_indentation = true,
@@ -221,8 +224,6 @@ return {
 					},
 				},
 			})
-			map("n", "<space><space>", "za")
-			map("n", "za", "<Nop>")
 		end,
 	},
 	"towolf/vim-helm",
@@ -236,7 +237,7 @@ return {
 			})
 		end,
 	},
-	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
+	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow", lazy = true },
 	-- {
 	-- 	"glepnir/lspsaga.nvim",
 	-- 	event = "BufRead",

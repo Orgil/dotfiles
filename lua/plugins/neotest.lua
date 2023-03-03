@@ -3,6 +3,7 @@ local map = require("utils").map
 return {
 	{
 		"nvim-neotest/neotest",
+		lazy = true,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
@@ -54,6 +55,7 @@ return {
 	},
 	{
 		"andythigpen/nvim-coverage",
+		lazy = true,
 		dependencies = "nvim-lua/plenary.nvim",
 		config = function()
 			require("coverage").setup()
