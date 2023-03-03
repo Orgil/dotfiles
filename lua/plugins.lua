@@ -70,7 +70,7 @@ return {
 			-- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 		end,
 	},
-	"sheerun/vim-polyglot",
+	-- "sheerun/vim-polyglot",
 	{
 		"folke/trouble.nvim",
 		lazy = true,
