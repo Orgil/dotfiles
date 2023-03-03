@@ -55,7 +55,7 @@ return {
 						-- ["<cr>"] = "open_drop",
 						["t"] = "open_tab_drop",
 						["o"] = "open_with_window_picker",
-						-- ["<cr>"] = "open_drop",
+						["<cr>"] = "open_with_window_picker",
 						--["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
 						["ma"] = {
 							"add",
