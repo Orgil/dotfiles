@@ -1,0 +1,58 @@
+{
+  "Log to the console": {
+    "prefix": "cl",
+    "body": [
+      "console.log($1);",
+      "$0"
+    ],
+    "description": "Log to the console"
+  },
+  "Interface Definition": {
+    "prefix": "iface",
+    "body": [
+      "interface ${1:name} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Interface Definition"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+      "\tconst ${3:element} = ${2:array}[${1:index}];",
+      "\t$0",
+      "}"
+    ],
+    "description": "For Loop"
+  },
+  "For-Each Loop using =>": {
+    "prefix": "foreach",
+    "body": [
+      "${1:array}.forEach(${2:element} => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "For-Each Loop using =>"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "If Statement"
+  },
+  "If-Else Statement": {
+    "prefix": "ifelse",
+    "body": [
+      "if (${1:condition}) {",
+      "\t$0",
+      "} else {",
+      "\t",
+      "}"
+    ],
+    "description": "If-Else Statement"
+  }
+}
