@@ -4,7 +4,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons", lazy = true },
 		opts = {
 			options = {
-				disabled_filetypes = { "Trouble", "neo-tree", "neo-tree-popup", "alpha" },
+				disabled_filetypes = { "Trouble", "neo-tree", "neo-tree-popup", "alpha", "NvimTree" },
 			},
 			sections = {
 				lualine_a = { "mode" },

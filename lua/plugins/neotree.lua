@@ -34,6 +34,7 @@ return {
 		lazy = false,
 		config = function()
 			vim.cmd([[let g:neo_tree_remove_legacy_commands = 1]])
+			local highlights = require("neo-tree.ui.highlights")
 			require("neo-tree").setup({
 				popup_border_style = "rounded",
 				default_component_configs = {
@@ -87,6 +88,32 @@ return {
 							".github",
 							".env",
 						},
+					},
+					components = {
+						name = function(config, node, state)
+							local highlight = config.highlight or highlights.FILE_NAME
+							local name = node.name
+							if node.type == "directory" then
+								highlight = highlights.DIRECTORY_NAME
+							end
+
+							if node:get_depth() == 1 then
+								highlight = highlights.ROOT_NAME
+								name = node.name:match("([^/]+)/?$")
+							else
+								if config.use_git_status_colors == nil or config.use_git_status_colors then
+									local git_status = state.components.git_status({}, node, state)
+									if git_status and git_status.highlight then
+										highlight = git_status.highlight
+									end
+								end
+							end
+
+							return {
+								text = name,
+								highlight = highlight,
+							}
+						end,
 					},
 					window = {
 						mappings = {
