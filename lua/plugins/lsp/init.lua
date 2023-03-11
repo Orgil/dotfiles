@@ -46,7 +46,6 @@ return {
 			},
 			autoformat = true,
 			servers = {
-
 				jsonls = {
 					-- lazy-load schemastore when needed
 					on_new_config = function(new_config)
@@ -84,7 +83,13 @@ return {
 						filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 					},
 				},
-				yamlls = {},
+				yamlls = {
+					settings = {
+						yaml = {
+							keyOrdering = false,
+						},
+					},
+				},
 				rust_analyzer = {},
 				lua_ls = {
 					-- mason = false, -- set to false if you don't want this server to be installed with mason
