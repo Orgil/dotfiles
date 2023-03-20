@@ -2,6 +2,7 @@ local opt = vim.opt
 local g = vim.g
 
 opt.mouse = "a"
+opt.lazyredraw = true
 opt.background = "dark"
 opt.encoding = "utf-8"
 opt.number = true
@@ -32,7 +33,7 @@ opt.clipboard = "unnamedplus"
 opt.ignorecase = true
 opt.smartcase = true
 -- opt.cindent = true
-opt.autoindent = true
+opt.smartindent = true
 opt.termguicolors = true
 opt.splitright = true
 opt.splitbelow = true
