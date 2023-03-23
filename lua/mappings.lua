@@ -35,10 +35,10 @@ map("i", "<c-c>", "<Esc>")
 map("n", "<S-j>", "<cmd>m .+1<cr>==")
 map("n", "<S-k>", "<cmd>m .-2<cr>==")
 
--- moving cursor to beginning of last row of pasted text
-map("v", "y", "y`]^")
-map("v", "p", "p`]^")
-map("n", "p", "p`]^")
+-- -- moving cursor to beginning of last row of pasted text
+-- map("v", "y", "y`]^")
+-- map("v", "p", "p`]^")
+-- map("n", "p", "p`]^")
 
 map("n", "Y", "J")
 
