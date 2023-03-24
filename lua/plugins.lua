@@ -88,7 +88,7 @@ return {
 	},
 	{
 		"folke/zen-mode.nvim",
-		lazy = true,
+		lazy = false,
 		opts = {
 			window = { width = 160 },
 		},

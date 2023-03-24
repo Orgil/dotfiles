@@ -3,5 +3,19 @@
   "tabWidth": 2,
   "keywordCase": "upper",
   "linesBetweenQueries": 2,
-  "logicalOperatorNewline": "after"
+  "logicalOperatorNewline": "after",
+  "paramTypes": {
+    "named": [
+      ":",
+      "@"
+    ],
+    "custom": [
+      {
+        "regex": "sqlc\\.narg\\('[a-zA-Z0-9_]+'\\)"
+      },
+      {
+        "regex": "sqlc\\.arg\\('[a-zA-Z0-9_]+'\\)"
+      }
+    ]
+  }
 }
