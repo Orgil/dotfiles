@@ -237,9 +237,9 @@ return {
 				-- debug = true,
 				sources = {
 					-- diagnostics
-					require("plugins.lsp.sqlint"),
 					nls.builtins.diagnostics.protolint,
 					require("typescript.extensions.null-ls.code-actions"),
+					nls.builtins.formatting.eslint_d,
 					nls.builtins.formatting.golines,
 					nls.builtins.formatting.goimports,
 					nls.builtins.formatting.protolint,
