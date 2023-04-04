@@ -15,6 +15,9 @@
       },
       {
         "regex": "sqlc\\.arg\\('[a-zA-Z0-9_]+'\\)"
+      },
+      {
+        "regex": "uuid_generate_v4\\(\\)"
       }
     ]
   }
