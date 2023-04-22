@@ -181,7 +181,7 @@ return {
 	},
 	{
 		"mbbill/undotree",
-		lazy = true,
+		lazy = false,
 		config = function()
 			vim.g.undotree_WindowLayout = 3
 			vim.g.undotree_SplitWidth = 60

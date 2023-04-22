@@ -1,3 +1,14 @@
+local configs = require("lspconfig.configs")
+
+configs.solidity = {
+	default_config = {
+		cmd = { "nomicfoundation-solidity-language-server", "--stdio" },
+		filetypes = { "solidity" },
+		root_dir = require("lspconfig.util").root_pattern("hardhat.config.*", ".git"),
+		single_file_support = true,
+	},
+}
+
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -46,6 +57,9 @@ return {
 			},
 			autoformat = true,
 			servers = {
+				solidity = {
+					mason = false,
+				},
 				jsonls = {
 					-- lazy-load schemastore when needed
 					on_new_config = function(new_config)
