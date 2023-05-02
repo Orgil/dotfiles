@@ -4,6 +4,8 @@ local g = vim.g
 g.mapleader = ","
 
 map("n", "r", "<c-r>")
+map("n", "✠", "i<cr><esc>")
+map("n", "<c-cr>", "i<cr><esc>")
 
 map("n", "<C-h>", "<C-w>h")
 map("n", "<C-j>", "<C-w>j")

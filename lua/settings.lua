@@ -1,4 +1,4 @@
-local opt = vim.opt
+local opt = vim.o
 local g = vim.g
 
 opt.mouse = "a"
@@ -13,8 +13,11 @@ opt.softtabstop = 2
 opt.showtabline = 2
 -- opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
-opt.shortmess:append({ W = true, I = true, c = true })
-opt.fillchars:append("fold:•")
+vim.opt.shortmess:append({ W = true, I = true, c = true })
+vim.opt.fillchars:append("fold:•")
+opt.foldenable = true
+opt.foldcolumn = "1"
+opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
@@ -32,6 +35,8 @@ opt.hidden = true
 opt.clipboard = "unnamedplus"
 opt.ignorecase = true
 opt.smartcase = true
+opt.autoindent = true
+opt.incsearch = true
 -- vim.o.smartindent = true
 -- vim.o.indentexpr = ""
 -- opt.cindent = true
@@ -52,7 +57,7 @@ opt.pumheight = 20 -- Maximum number of entries in a popup
 
 if vim.fn.has("nvim-0.9.0") == 1 then
 	opt.splitkeep = "screen"
-	opt.shortmess:append({ C = true })
+	vim.opt.shortmess:append({ C = true })
 end
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, { pattern = { "*" }, command = "normal zx" })

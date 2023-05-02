@@ -9,8 +9,8 @@ return {
 			{ "<bs>", desc = "Schrink selection", mode = "x" },
 		},
 		opts = {
-			highlight = { enable = true, additional_vim_regex_highlighting = true },
-			indent = { enable = false },
+			autotag = { enable = true },
+			highlight = { enable = true, additional_vim_regex_highlighting = true, use_languagetree = true },
 			context_commentstring = { enable = true, enable_autocmd = false },
 			ensure_installed = {
 				"bash",
@@ -61,15 +61,6 @@ return {
 				"yaml",
 				"sql",
 				"typescript",
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<S-space>",
-					node_incremental = "<S-space>",
-					scope_incremental = "<nop>",
-					node_decremental = "<bs>",
-				},
 			},
 		},
 		config = function(_, opts)

@@ -30,7 +30,8 @@ return {
 			vim.cmd([[colorscheme duskfox]])
 		end,
 	},
-	{ -- LSP Configuration & Plugins
+	{
+		-- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		event = "BufReadPre",
 		after = "mason-lspconfig.nvim",
@@ -59,23 +60,60 @@ return {
 			})
 		end,
 	},
-	{
-		"nmac427/guess-indent.nvim",
-		config = function()
-			require("guess-indent").setup({})
-		end,
-	},
+	-- {
+	-- 	"nmac427/guess-indent.nvim",
+	-- 	config = function()
+	-- 		require("guess-indent").setup({})
+	-- 	end,
+	-- },
 	{
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup({
 				disable_filetype = { "TelescopePrompt", "vim" },
+				check_ts = true,
+				ts_config = {
+					lua = { "string" }, -- it will not add a pair on that treesitter node
+					javascript = { "template_string" },
+					java = false, -- don't check treesitter on java
+				},
+				break_line_filetype = nil, -- enable this rule for all filetypes
+				pairs_map = {
+					["'"] = "'",
+					['"'] = '"',
+					["("] = ")",
+					["["] = "]",
+					["{"] = "}",
+					["`"] = "`",
+				},
+				html_break_line_filetype = {
+					"html",
+					"vue",
+					"typescriptreact",
+					"svelte",
+					"javascriptreact",
+				},
+				ignored_next_char = "[%w%.%+%-%=%/%,]",
 			})
-			-- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-			-- local cmp = require("cmp")
-			-- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on(
+				"confirm_done",
+				cmp_autopairs.on_confirm_done({
+					map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
+					auto_select = true, -- automatically select the first item
+					insert = false, -- use insert confirm behavior instead of replace
+					map_char = {
+						-- modifies the function or method delimiter by filetypes
+						all = "(",
+						tex = "{",
+					},
+				})
+			)
 		end,
 	},
+	{ "windwp/nvim-ts-autotag", config = true },
+	{ "tpope/vim-repeat" },
 	-- "sheerun/vim-polyglot",
 	{
 		"folke/trouble.nvim",
