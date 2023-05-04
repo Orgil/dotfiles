@@ -75,7 +75,27 @@ return {
 						},
 					},
 				},
-				gopls = {},
+				gopls = {
+					analyses = {
+						nilness = true,
+						unusedparams = true,
+						unusedwrite = true,
+						useany = true,
+					},
+					experimentalPostfixCompletions = true,
+					gofumpt = true,
+					staticcheck = true,
+					usePlaceholders = true,
+					hints = {
+						assignVariableTypes = true,
+						compositeLiteralFields = true,
+						compositeLiteralTypes = true,
+						constantValues = true,
+						functionTypeParameters = true,
+						parameterNames = true,
+						rangeVariableTypes = true,
+					},
+				},
 				tsserver = {
 					flags = {
 						allow_incremental_sync = true,
@@ -170,7 +190,7 @@ return {
 								if opts.autoformat then
 									local ft = vim.bo[buffer].filetype
                   -- stylua: ignore
-									local have_nls = #require("null-ls.sources").get_available( ft, "NULL_LS_FORMATTING") > 0
+                  local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
 
 									vim.lsp.buf.format(vim.tbl_deep_extend("force", {
 										bufnr = buffer,
