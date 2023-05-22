@@ -83,6 +83,7 @@ return {
 						useany = true,
 					},
 					experimentalPostfixCompletions = true,
+					experimentalWorkspaceModule = true,
 					gofumpt = true,
 					staticcheck = true,
 					usePlaceholders = true,
