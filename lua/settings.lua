@@ -2,7 +2,6 @@ local opt = vim.o
 local g = vim.g
 
 opt.mouse = "a"
-opt.lazyredraw = true
 opt.background = "dark"
 opt.encoding = "utf-8"
 opt.number = true
@@ -15,10 +14,11 @@ opt.showtabline = 2
 opt.shiftwidth = 2 -- Size of an indent
 vim.opt.shortmess:append({ W = true, I = true, c = true })
 vim.opt.fillchars:append("fold:•")
-opt.foldenable = true
-opt.foldcolumn = "1"
+-- opt.foldenable = true
+-- opt.foldcolumn = "1"
 opt.foldlevel = 99
-opt.foldlevelstart = 99
+opt.foldlevelstart = -1
+-- opt.foldlevelstart = 99
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.signcolumn = "yes"

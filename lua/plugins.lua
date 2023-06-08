@@ -60,12 +60,6 @@ return {
 			})
 		end,
 	},
-	-- {
-	-- 	"nmac427/guess-indent.nvim",
-	-- 	config = function()
-	-- 		require("guess-indent").setup({})
-	-- 	end,
-	-- },
 	{
 		"windwp/nvim-autopairs",
 		config = function()
@@ -114,7 +108,6 @@ return {
 	},
 	{ "windwp/nvim-ts-autotag", config = true },
 	{ "tpope/vim-repeat" },
-	-- "sheerun/vim-polyglot",
 	{
 		"folke/trouble.nvim",
 		lazy = true,
@@ -199,6 +192,14 @@ return {
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
+		opts = {
+			direction = "float",
+			border = "curved",
+			width = function()
+				return vim.o.columns * 0.4
+			end,
+			winblend = 3,
+		},
 		config = function(_, opts)
 			require("toggleterm").setup(opts)
 
@@ -214,7 +215,7 @@ return {
 
 			-- if you only want these mappings for toggle term use term://*toggleterm#* instead
 			vim.cmd("autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()")
-			map("n", "<leader>ft", ":ToggleTerm size=20 direction=horizontal<cr>")
+			map("n", "<leader>ft", ":ToggleTerm size=20 direction=float<cr>")
 		end,
 	},
 	{
@@ -270,7 +271,57 @@ return {
 			})
 		end,
 	},
-	"towolf/vim-helm",
+	-- {
+	--   "luukvbaal/statuscol.nvim",
+	--   config = function()
+	--     -- local builtin = require("statuscol.builtin")
+	--     require("statuscol").setup({
+	--       -- configuration goes here, for example:
+	--       -- relculright = true,
+	--       -- segments = {
+	--       --   { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+	--       --   {
+	--       --     sign = { name = { "Diagnostic" }, maxwidth = 2, auto = true },
+	--       --     click = "v:lua.ScSa"
+	--       --   },
+	--       --   { text = { builtin.lnumfunc }, click = "v:lua.ScLa", },
+	--       --   {
+	--       --     sign = { name = { ".*" }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
+	--       --     click = "v:lua.ScSa"
+	--       --   },
+	--       -- }
+	--     })
+	--   end,
+	-- },
+	{
+		"towolf/vim-helm",
+	},
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			lsp = {
+				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true,
+				},
+			},
+			-- you can enable a preset for easier configuration
+			presets = {
+				bottom_search = true, -- use a classic bottom cmdline for search
+				command_palette = true, -- position the cmdline and popupmenu together
+				long_message_to_split = true, -- long messages will be sent to a split
+				inc_rename = false, -- enables an input dialog for inc-rename.nvim
+				lsp_doc_border = false, -- add a border to hover docs and signature help
+			},
+		},
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+		},
+	},
 	{
 		"folke/todo-comments.nvim",
 		config = function()
