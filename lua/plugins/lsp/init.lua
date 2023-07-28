@@ -383,14 +383,14 @@ return {
 	},
 	{
 		"leoluz/nvim-dap-go",
-		lazy = true,
+		lazy = false,
 		config = function()
 			require("dap-go").setup()
 		end,
 	},
 	{
 		"rcarriga/nvim-dap-ui",
-		lazy = true,
+		lazy = false,
 		dependencies = { "mfussenegger/nvim-dap" },
 		config = function()
 			require("dapui").setup()

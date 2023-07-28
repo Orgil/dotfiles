@@ -3,12 +3,13 @@ local map = require("utils").map
 return {
 	{
 		"nvim-neotest/neotest",
-		lazy = true,
+		lazy = false,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-neotest/neotest-go",
+			"nvim-neotest/neotest-jest",
 		},
 		config = function()
 			-- get neotest namespace (api call creates or returns namespace)
@@ -31,6 +32,14 @@ return {
 							test_table = true,
 						},
 						args = { "-count=1", "-timeout=60s" },
+					}),
+					require("neotest-jest")({
+						jestCommand = "npm test --",
+						jestConfigFile = "custom.jest.config.ts",
+						env = { CI = true },
+						cwd = function(path)
+							return vim.fn.getcwd()
+						end,
 					}),
 				},
 			})
@@ -55,7 +64,7 @@ return {
 	},
 	{
 		"andythigpen/nvim-coverage",
-		lazy = true,
+		lazy = false,
 		dependencies = "nvim-lua/plenary.nvim",
 		config = function()
 			require("coverage").setup()
