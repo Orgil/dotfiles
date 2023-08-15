@@ -101,9 +101,13 @@ export ARCHFLAGS="-arch x86_64"
 alias d="devspace"
 alias zshconfig="nvim ~/.zshrc"
 alias projects="cd ~/Projects"
+alias gameprojects="cd ~/GameProjects"
+alias lz="lazygit"
+alias m="minikube"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+eval $(minikube -p minikube docker-env)
 
 # pnpm
 export PNPM_HOME="/home/orgil/.local/share/pnpm"
@@ -112,5 +116,7 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+export GOPRIVATE="github.com/mastercode-projects/master-bus-go"
+export PATH=$(go env GOPATH)/bin:$PATH
 #
 eval "$(starship init zsh)"
