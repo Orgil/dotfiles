@@ -38,7 +38,7 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			{ "j-hui/fidget.nvim", config = true },
+			{ "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", config = true },
 			"folke/neodev.nvim",
 		},
 	},
