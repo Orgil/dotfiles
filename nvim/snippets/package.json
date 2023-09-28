@@ -12,6 +12,13 @@
           "typescriptreact"
         ],
         "path": "./typescript.json"
+      },
+      {
+        "language": [
+          "go",
+          "golang"
+        ],
+        "path": "./golang.json"
       }
     ]
   }

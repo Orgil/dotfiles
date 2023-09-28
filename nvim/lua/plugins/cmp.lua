@@ -24,6 +24,7 @@ return {
 		},
 		opts = function()
 			local cmp = require("cmp")
+			local compare = require("cmp.config.compare")
 			local luasnip = require("luasnip")
 			local has_words_before = function()
 				unpack = unpack or table.unpack
@@ -32,6 +33,7 @@ return {
 					and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 			end
 			return {
+				preselect = cmp.PreselectMode.None,
 				completion = {
 					completeopt = "menu,menuone,noinsert",
 				},
@@ -65,11 +67,11 @@ return {
 					end, { "i", "s" }),
 				}),
 				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
+					{ name = "luasnip", priority = 4, keyword_length = 2 },
+					{ name = "nvim_lsp", priority = 3, keyword_length = 1 },
 				}, {
-					{ name = "path" },
-					{ name = "buffer" },
+					{ name = "buffer", priority = 2, keyword_length = 3 },
+					{ name = "path", priority = 1, keyword_length = 3 },
 				}),
 				formatting = {
 					format = function(_, item)
@@ -79,6 +81,22 @@ return {
 						end
 						return item
 					end,
+				},
+				sorting = {
+					priority_weight = 1.0,
+					comparators = {
+						-- compare.score_offset, -- not good at all
+						compare.locality,
+						compare.recently_used,
+						compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
+						compare.offset,
+						compare.order,
+						-- compare.scopes, -- what?
+						-- compare.sort_text,
+						-- compare.exact,
+						-- compare.kind,
+						-- compare.length, -- useless
+					},
 				},
 				experimental = {
 					ghost_text = {

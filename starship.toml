@@ -1,0 +1,13 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+right_format="$kubernetes"
+
+[kubernetes]
+format='[[☸](white) $context \($namespace\)](cyan bold) '
+disabled = false
+
+[docker_context]
+disabled = true

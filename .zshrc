@@ -89,7 +89,7 @@ source $ZSH/oh-my-zsh.sh
 # fi
 
 # Compilation flags
-export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch x86_64"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -100,8 +100,8 @@ export ARCHFLAGS="-arch x86_64"
 
 alias d="devspace"
 alias zshconfig="nvim ~/.zshrc"
-alias projects="cd ~/Projects"
-alias gameprojects="cd ~/GameProjects"
+alias projects="cd /Volumes/SSD/Projects"
+alias gameprojects="cd /Volumes/SSD/GameProjects"
 alias lz="lazygit"
 alias m="minikube"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
