@@ -9,7 +9,7 @@ return {
 			{ "<bs>", desc = "Schrink selection", mode = "x" },
 		},
 		opts = {
-			autotag = { enable = true },
+			autotag = { enable = true, enable_close_on_slash = false },
 			highlight = { enable = true, additional_vim_regex_highlighting = true, use_languagetree = true },
 			context_commentstring = { enable = true, enable_autocmd = false },
 			ensure_installed = {

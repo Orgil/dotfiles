@@ -26,7 +26,7 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			"hrsh7th/cmp-nvim-lsp",
 			"simrat39/rust-tools.nvim",
-			"jose-elias-alvarez/typescript.nvim",
+			-- "jose-elias-alvarez/typescript.nvim",
 			"p00f/clangd_extensions.nvim",
 			{
 				"b0o/SchemaStore.nvim",
@@ -36,7 +36,7 @@ return {
 		opts = {
 			-- options for vim.diagnostic.config()
 			diagnostics = {
-				underline = true,
+				-- underline = true,
 				signs = true,
 				update_in_insert = false,
 				severity_sort = true,
@@ -163,15 +163,15 @@ return {
 					})
 					return true
 				end,
-				tsserver = function(_, opts)
-					require("typescript").setup({
-						go_to_source_definition = {
-							fallback = true, -- fall back to standard LSP definition on failure
-						},
-						server = opts,
-					})
-					return true
-				end,
+				-- tsserver = function(_, opts)
+				-- 	require("typescript").setup({
+				-- 		go_to_source_definition = {
+				-- 			fallback = true, -- fall back to standard LSP definition on failure
+				-- 		},
+				-- 		server = opts,
+				-- 	})
+				-- 	return true
+				-- end,
 				-- Specify * to use this function as a fallback for any server
 				-- ["*"] = function(server, opts) end,
 			},
@@ -262,7 +262,7 @@ return {
 		end,
 	},
 	{
-		"jose-elias-alvarez/null-ls.nvim",
+		"nvimtools/none-ls.nvim",
 		event = "BufReadPre",
 		dependencies = { "mason.nvim" },
 		opts = function()
@@ -273,7 +273,8 @@ return {
 				sources = {
 					-- diagnostics
 					nls.builtins.diagnostics.protolint,
-					require("typescript.extensions.null-ls.code-actions"),
+					nls.builtins.diagnostics.eslint_d,
+					-- require("typescript.extensions.null-ls.code-actions"),
 					nls.builtins.formatting.eslint_d,
 					nls.builtins.formatting.golines,
 					nls.builtins.formatting.goimports,
@@ -285,6 +286,11 @@ return {
 				},
 			}
 		end,
+	},
+	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {},
 	},
 	{
 		"williamboman/mason.nvim",

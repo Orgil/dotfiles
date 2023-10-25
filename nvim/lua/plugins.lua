@@ -65,6 +65,7 @@ return {
 		config = function()
 			require("nvim-autopairs").setup({
 				disable_filetype = { "TelescopePrompt", "vim" },
+				enable_check_bracket_line = false,
 				check_ts = true,
 				ts_config = {
 					lua = { "string" }, -- it will not add a pair on that treesitter node
@@ -110,7 +111,7 @@ return {
 	{ "tpope/vim-repeat" },
 	{
 		"folke/trouble.nvim",
-		lazy = true,
+		lazy = false,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
 			indent_lines = false,
@@ -119,10 +120,21 @@ return {
 		},
 		config = function(_, opts)
 			require("trouble").setup(opts)
-			map("n", "<F2>", ":TodoTrouble<cr>")
 			map("n", "<F3>", ":TroubleToggle workspace_diagnostics<cr>")
 		end,
 	},
+	-- {
+	-- 	"gbprod/yanky.nvim",
+	-- 	config = function()
+	-- 		require("yanky").setup()
+	-- 		vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
+	-- 		vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
+	-- 		vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
+	-- 		vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
+	-- 		vim.keymap.set("n", "<c-n>", "<Plug>(YankyCycleForward)")
+	-- 		vim.keymap.set("n", "<c-p>", "<Plug>(YankyCycleBackward)")
+	-- 	end,
+	-- },
 	{
 		"folke/zen-mode.nvim",
 		lazy = false,
@@ -156,7 +168,6 @@ return {
 						local hl = tab.is_current() and theme.current_tab or theme.tab
 						return {
 							line.sep("", hl, theme.fill),
-							tab.is_current() and "" or "",
 							tab.number(),
 							line.sep("", hl, theme.fill),
 							hl = hl,
@@ -185,7 +196,11 @@ return {
 					},
 					hl = theme.fill,
 				}
-			end)
+			end, {
+				buf_name = {
+					mode = "relative",
+				},
+			})
 		end,
 	},
 	{ "lewis6991/gitsigns.nvim", config = true },

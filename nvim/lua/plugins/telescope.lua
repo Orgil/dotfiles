@@ -60,10 +60,21 @@ return {
 							},
 						},
 					},
+					aerial = {
+						theme = "dropdown",
+					},
 				},
 				extensions = {
 					fzf = {
 						fuzzy = true,
+					},
+					aerial = {
+						-- Display symbols as <root>.<parent>.<symbol>
+						show_nesting = {
+							["_"] = false, -- This key will be the default
+							json = true, -- You can set the option for specific filetypes
+							yaml = true,
+						},
 					},
 				},
 			})
@@ -77,11 +88,17 @@ return {
 				"<c-b>",
 				"<cmd>lua require'telescope.builtin'.buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
 			)
+			map(
+				"n",
+				"<c-m>",
+				"<cmd>lua require'telescope'.extensions.aerial.aerial(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
+			)
 			map("n", "<c-f>", "<cmd>Telescope live_grep<cr>")
 			-- map("n", "<leader>d", ":Telescope lsp_definitions theme=dropdown<CR>")
 			-- map("n", "<leader>t", ":Telescope lsp_type_definitions theme=dropdown<CR>")
 
 			require("telescope").load_extension("fzf")
+			require("telescope").load_extension("aerial")
 		end,
 	},
 }
