@@ -38,6 +38,7 @@ alt + shift - 5 : yabai -m window --space 5; yabai -m space --focus 5
 alt + shift - 6 : yabai -m window --space 6; yabai -m space --focus 6
 alt + shift - 7 : yabai -m window --space 7; yabai -m space --focus 7
 alt + shift - 8 : yabai -m window --space 8; yabai -m space --focus 8
+# cmd - 2 : index=2; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"cmd - " + (map(select(."is-native-fullscreen" == false)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
 
 # # mirror tree y-axis
 alt + shift - y : yabai -m space --mirror y-axis
@@ -81,7 +82,5 @@ alt - f : yabai -m window --toggle zoom-fullscreen
 
 alt - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d /Volumes/SSD/Projects 
 # alt - return : open -n /Applications/Alacritty.app --args --working-directory=/Volumes/SSD/Projects
-
-alt - t : yabai -m window --toggle topmost; yabai -m window --toggle topmost
 
 shift + alt - f : yabai -m window --toggle float; yabai -m window --grid 4:4:1:1:2:2

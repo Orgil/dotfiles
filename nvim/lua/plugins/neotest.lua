@@ -34,8 +34,7 @@ return {
 						args = { "-count=1", "-timeout=60s" },
 					}),
 					require("neotest-jest")({
-						jestCommand = "npm test --",
-						jestConfigFile = "custom.jest.config.ts",
+						jestCommand = "pnpm jest",
 						env = { CI = true },
 						cwd = function(path)
 							return vim.fn.getcwd()

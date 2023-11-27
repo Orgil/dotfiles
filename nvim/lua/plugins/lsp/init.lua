@@ -278,7 +278,7 @@ return {
 					nls.builtins.formatting.eslint_d,
 					nls.builtins.formatting.golines,
 					nls.builtins.formatting.goimports,
-					nls.builtins.formatting.protolint,
+					-- nls.builtins.formatting.protolint,
 					nls.builtins.formatting.stylua,
 					nls.builtins.formatting.sql_formatter.with({
 						args = { "-c", configFile },
@@ -412,5 +412,5 @@ return {
 			end
 		end,
 	},
-	{ "theHamsta/nvim-dap-virtual-text", config = true, lazy = true },
+	{ "theHamsta/nvim-dap-virtual-text", config = true, lazy = false },
 }
