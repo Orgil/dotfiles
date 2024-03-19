@@ -87,22 +87,6 @@ return {
             rangeVariableTypes = true,
           },
         },
-        tsserver = {
-          flags = {
-            allow_incremental_sync = true,
-          },
-          handlers = {
-            -- pick the first response to a go to definition response. that way we go straight to the
-            -- source definition without needing to choose from the type definition .d.ts file
-            ["textDocument/definition"] = function(err, result, ...)
-              result = vim.tbl_islist(result) and result[1] or result
-              vim.lsp.handlers["textDocument/definition"](err, result, ...)
-            end,
-            ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-              virtual_text = false,
-            }),
-          },
-        },
         clangd = {
           server = {
             filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
@@ -153,47 +137,30 @@ return {
           })
           return true
         end,
-        -- tsserver = function(_, opts)
-        -- 	require("typescript").setup({
-        -- 		go_to_source_definition = {
-        -- 			fallback = true, -- fall back to standard LSP definition on failure
-        -- 		},
-        -- 		server = opts,
-        -- 	})
-        -- 	return true
-        -- end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
       },
     },
     config = function(_, opts)
       -- setup formatting and keymaps
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
-          local buffer = args.buf
+          local buf = args.buf
           local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-          if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              group = vim.api.nvim_create_augroup("LspFormat." .. buffer, {}),
-              buffer = buffer,
-              callback = function()
-                if opts.autoformat then
-                  local ft = vim.bo[buffer].filetype
-                  -- stylua: ignore
-                  local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+          if client.supports_method("textDocument/inlayHint") then
+            local ih = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+            if type(ih) == "function" then
+              ih(buf, true)
+            elseif type(ih) == "table" and ih.enable then
+              ih.enable(buf, true)
+            end
+          end
 
-                  vim.lsp.buf.format(vim.tbl_deep_extend("force", {
-                    bufnr = buffer,
-                    filter = function(clienter)
-                      if have_nls then
-                        return clienter.name == "null-ls"
-                      end
-                      return clienter.name ~= "null-ls"
-                    end,
-                  }, opts.format or {}))
-                end
-              end,
+          if client.supports_method("textDocument/codeLens") and vim.lsp.codelens then
+            vim.lsp.codelens.refresh()
+            --- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
+            vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+              buffer = buf,
+              callback = vim.lsp.codelens.refresh,
             })
           end
 
@@ -251,35 +218,135 @@ return {
       require("mason-lspconfig").setup_handlers({ setup })
     end,
   },
-  -- {
-  --   "stevearc/conform.nvim",
-  --   event = "BufReadPre",
-  --   opts = {},
-  -- },
   {
-    "nvimtools/none-ls.nvim",
-    event = "BufReadPre",
+    "stevearc/conform.nvim",
     dependencies = { "mason.nvim" },
-    opts = function()
-      local nls = require("null-ls")
-      local configFile = vim.fn.expand("$HOME/.config/nvim/sql-formatter.json")
-      return {
-        -- debug = true,
-        sources = {
-          -- diagnostics
-          nls.builtins.diagnostics.protolint,
-          nls.builtins.diagnostics.eslint,
-          -- require("typescript.extensions.null-ls.code-actions"),
-          nls.builtins.formatting.eslint,
-          nls.builtins.formatting.golines,
-          nls.builtins.formatting.goimports,
-          -- nls.builtins.formatting.protolint,
-          nls.builtins.formatting.stylua,
-          nls.builtins.formatting.sql_formatter.with({
-            args = { "-c", configFile },
-          }),
-        },
-      }
+    -- keys = {
+    --   {
+    --     "<leader>ff",
+    --     function()
+    --       require("conform").format({ formatters = { "injected" } })
+    --     end,
+    --     mode = { "n", "v" },
+    --     desc = "Format Injected Langs"
+    --   }
+    -- },
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        -- Conform will run multiple formatters sequentially
+        -- Use a sub-list to run only the first available formatter
+        javascript = { { "eslint_d", "eslint", "prettierd", "prettier" } },
+        javascriptreact = { { "eslint_d", "eslint", "prettierd", "prettier" } },
+        typescript = { { "eslint_d", "eslint", "prettierd", "prettier" } },
+        typescriptreact = { { "eslint_d", "eslint", "prettierd", "prettier" } },
+        css = { { "stylelint" } },
+        go = { { "goimports", "golines", "", "prettier" } },
+        proto = { { "buf" } },
+        sql = { { "sql_formatter" } },
+        ["*"] = { "injected" }
+      },
+      formatters = {
+        stdin = false,
+        injected = { options = { ignore_errors = true } },
+      },
+      format_on_save = {
+        lsp_fallback = true,
+        async = false,
+        timeout_ms = 500,
+      },
+    },
+    config = function(_, opts)
+      require("conform").formatters.sql_formatter = { prepend_args = { "-c", vim.fn.expand("$HOME/.config/nvim/sql-formatter.json") } }
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("LazyFormat", {}),
+        callback = function(event)
+          require("conform").format({ buf = event.buf })
+        end,
+      })
+      require("conform").setup(opts)
+    end
+  },
+  {
+    "mfussenegger/nvim-lint",
+    event = {
+      "BufReadPre",
+      "BufNewFile",
+    },
+    opts = {
+      -- Event to trigger linters
+      linters_by_ft = {
+        javascript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescript = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+        go = { "golangcilint" },
+        yaml = { "yamllint" },
+        css = { "stylelint" },
+        scss = { "stylelint" },
+        proto = { "protolint" }
+        -- Use the "*" filetype to run linters on all filetypes.
+        -- ['*'] = { 'global linter' },
+        -- Use the "_" filetype to run linters on filetypes that don't have other linters configured.
+      },
+      linters = {},
+    },
+    config = function(_, opts)
+      local lint = require("lint")
+
+      local M = {}
+
+      for name, linter in pairs(opts.linters) do
+        if type(linter) == "table" and type(lint.linters[name]) == "table" then
+          lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
+        else
+          lint.linters[name] = linter
+        end
+      end
+
+      lint.linters_by_ft = opts.linters_by_ft
+      local lint_augroup = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
+
+      function M.lint()
+        local names = lint._resolve_linter_by_ft(vim.bo.filetype)
+
+        -- Add fallback linters.
+        if #names == 0 then
+          vim.list_extend(names, lint.linters_by_ft["_"] or {})
+        end
+
+        -- Add global linters.
+        vim.list_extend(names, lint.linters_by_ft["*"] or {})
+
+        -- Filter out linters that don't exist or don't match the condition.
+        local ctx = { filename = vim.api.nvim_buf_get_name(0) }
+        ctx.dirname = vim.fn.fnamemodify(ctx.filename, ":h")
+        names = vim.tbl_filter(function(name)
+          local linter = lint.linters[name]
+          return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
+        end, names)
+
+        -- Run linters.
+        if #names > 0 then
+          lint.try_lint(names)
+        end
+      end
+
+      function M.debounce(ms, fn)
+        local timer = vim.loop.new_timer()
+        return function(...)
+          local argv = { ... }
+          timer:start(ms, 0, function()
+            timer:stop()
+            vim.schedule_wrap(fn)(unpack(argv))
+          end)
+        end
+      end
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = lint_augroup,
+        callback = M.debounce(100, M.lint),
+      })
     end,
   },
   {
@@ -303,6 +370,8 @@ return {
         "delve",
         "goimports",
         "golines",
+        "eslint_d",
+        "yamllint",
         "protolint",
         "sql-formatter",
       },
