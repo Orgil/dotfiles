@@ -107,7 +107,13 @@ return {
 			)
 		end,
 	},
-	{ "windwp/nvim-ts-autotag", config = true },
+	{
+		"windwp/nvim-ts-autotag",
+		opts = {
+			enable_close_on_slash = false,
+		},
+		config = true,
+	},
 	{ "tpope/vim-repeat" },
 	{
 		"folke/trouble.nvim",
