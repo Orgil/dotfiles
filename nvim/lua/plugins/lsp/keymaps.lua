@@ -3,11 +3,23 @@ local rt = require("rust-tools")
 
 return {
 	default = function()
-		-- stylua: ignore start
-		map("n", "<leader>gt", vim.lsp.buf.type_definition)
+    -- stylua: ignore start
+    map("n", "<leader>gt", vim.lsp.buf.type_definition)
     map("n", "<leader>gd", vim.lsp.buf.declaration, { desc = "Go to declaration" })
     map("n", "<leader>d", vim.lsp.buf.definition, { desc = "Go to definition" })
-		map("n", "<leader>gr", vim.lsp.buf.references)
+    -- map("n", "<leader>gr", vim.lsp.buf.references)
+		map("n", "<leader>gr", function()
+		  require 'telescope.builtin'.lsp_references {
+		    layout_strategy = "horizontal",
+		    layout_config = {
+		      width = 0.6,
+		      height = 0.5,
+		      prompt_position = "top",
+		    },
+		    sorting_strategy = "ascending",
+		    ignore_filename = false,
+		  }
+		end)
 		-- stylua: ignore end
 		-- map("n", ";", vim.lsp.buf.hover)
 		map("n", "<leader>gi", vim.lsp.buf.implementation)

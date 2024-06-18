@@ -38,10 +38,10 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			{ "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", config = true },
-			"folke/neodev.nvim",
+			{ "j-hui/fidget.nvim", config = true },
 		},
 	},
+	{ "folke/lazydev.nvim", ft = "lua" },
 	{ "folke/neoconf.nvim", cmd = "Neoconf" },
 	{ "numToStr/Comment.nvim", config = true },
 	{ "NvChad/nvim-colorizer.lua", config = true },
