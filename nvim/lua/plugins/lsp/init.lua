@@ -128,6 +128,16 @@ return {
 						},
 					},
 				},
+				vtsls = {
+					settings = {
+						typescript = {
+							preferGoToSourceDefinition = true,
+						},
+						javascript = {
+							preferGoToSourceDefinition = true,
+						},
+					},
+				},
 			},
 			setup = {
 				clangd = function(_, opts)
@@ -170,14 +180,14 @@ return {
 					-- 	end
 					-- end
 					--
-					if client.supports_method("textDocument/codeLens") and vim.lsp.codelens then
-						vim.lsp.codelens.refresh()
-						--- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-						vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-							buffer = buf,
-							callback = vim.lsp.codelens.refresh,
-						})
-					end
+					-- if client.supports_method("textDocument/codeLens") and vim.lsp.codelens then
+					-- 	vim.lsp.codelens.refresh()
+					-- 	--- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
+					-- 	vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+					-- 		buffer = buf,
+					-- 		callback = vim.lsp.codelens.refresh,
+					-- 	})
+					-- end
 
 					local keymaps = require("plugins.lsp.keymaps")
 					keymaps.default()
