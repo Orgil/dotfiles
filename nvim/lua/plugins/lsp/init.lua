@@ -261,14 +261,14 @@ return {
 				lua = { "stylua" },
 				-- Conform will run multiple formatters sequentially
 				-- Use a sub-list to run only the first available formatter
-				javascript = { { "eslint_d", "eslint", "prettierd", "prettier" } },
-				javascriptreact = { { "eslint_d", "eslint", "prettierd", "prettier" } },
-				typescript = { { "eslint_d", "eslint", "prettierd", "prettier" } },
-				typescriptreact = { { "eslint_d", "eslint", "prettierd", "prettier" } },
-				css = { { "stylelint" } },
-				go = { { "goimports", "golines", "", "prettier" } },
-				proto = { { "buf" } },
-				sql = { { "sql_formatter" } },
+				javascript = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
+				typescript = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
+				css = { "stylelint" },
+				go = { "goimports", "golines" },
+				proto = { "buf" },
+				sql = { "sql_formatter" },
 				["*"] = { "injected" },
 			},
 			formatters = {

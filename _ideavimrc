@@ -1,0 +1,182 @@
+let mapleader=","
+
+set showcmd
+
+set scrolloff=5
+set incsearch
+set nooldundo
+
+map Q gq
+
+nnoremap <silent> <CR> :nohlsearch<CR>
+set sidescrolloff=5
+set history=1000   " overrides the 200 in defaults.vim
+set notimeout
+
+set clipboard^=unnamedplus,unnamed
+
+set hlsearch
+set ignorecase
+set smartcase
+set visualbell
+" set noerrorbells
+
+set showmode
+
+""" Idea specific settings ------------------
+set ideajoin
+set ideamarks
+
+""" Plugins  --------------------------------
+packadd matchit
+
+Plug 'easymotion/vim-easymotion'	# Requires IdeaVim-EasyMotion. Lots of mappings
+Plug 'kana/vim-textobj-entire'		# entire buffer text object: ae
+Plug 'machakann/vim-highlightedyank'
+Plug 'terryma/vim-multiple-cursors'	# See below for remapped keys. <A-n> doesn't work on Mac
+Plug 'tommcdo/vim-exchange'		    # cx{motion} to select, again to exchange
+Plug 'tpope/vim-commentary'		    # [count]gc{motion}, o_gc, v_gc, gcc
+Plug 'tpope/vim-surround'		    # ys, cs, ds, S
+Plug 'vim-scripts/argtextobj.vim'	    # argument text objects: aa, ia
+Plug 'vim-scripts/ReplaceWithRegister'
+
+set NERDTree
+
+set which-key
+let g:WhichKey_ShowVimActions = "true"
+let g:WhichKey_DefaultDelay = 0
+
+
+" CamelCaseMotion approximation (obsolete with proper CamelCaseMotoin plugin)
+" Missing inner word motions e.g. i<leader>w
+nmap w [w
+nmap cw c[w
+nmap dw d[w
+
+nmap b [b
+nmap cb c[b
+nmap db d[b
+
+nmap e ]w
+nmap ce c]w
+nmap de d]w
+
+nmap ge ]b
+
+""" Plugin settings -------------------------
+let g:argtextobj_pairs="[:],(:),<:>"
+
+function! Invert(calledFromVisual)
+  let antonyms = ['true', 'false', 'after', 'before', 'start', 'end', 'left', 'right', 'first', 'last',
+                 \'True', 'False', 'After', 'Before', 'Start', 'End', 'Left', 'Right', 'First', 'Last']
+
+  if a:calledFromVisual
+    normal gv"wy
+  else
+    normal "wyiw
+  endif
+  let wordUnderCaret = @w
+
+  let eraseWord = a:calledFromVisual ? 'gvc' : 'ciw'
+  let count = 0
+  while (count < len(antonyms))
+    if (antonyms[count] ==# wordUnderCaret)
+      let antonym = (count % 2 ==? 0) ? antonyms[count + 1] : antonyms[count - 1]
+      execute 'normal ' .. eraseWord .. antonym
+      break
+    endif
+    let count += 1
+  endwhile
+endfunction
+
+nnoremap ! :call Invert(0)<CR>
+vnoremap ! :<C-u>call Invert(1)<CR>
+
+" <C-n> seems to me as a better solution than <M-n>,
+" but we should finally support vim-visual-multi because vim-multiple-cursors is deprecated now
+
+" """ My Mappings -----------------------------
+" map <leader>f <Plug>(easymotion-s)
+" map <leader>e <Plug>(easymotion-f)
+"
+" map <leader>d <Action>(Debug)
+" map <leader>r <Action>(RenameElement)
+" map <leader>c <Action>(Stop)
+map <leader>z <Action>(ToggleDistractionFreeMode)
+map <leader>nt <Action>(SelectInProjectView)
+"
+map <leader>gb <Action>(Annotate)
+" map <leader>h <Action>(Vcs.ShowTabbedFileHistory)
+" map <S-Space> <Action>(GotoNextError)
+"
+" " Reformat the current line only
+nmap <leader>ff <Action>(ReformatCode)
+nmap <Space>s <Plug>(easymotion-s2)  
+nmap <leader>o <Action>(MaximizeEditorInSplit)
+
+nnoremap <leader>zc :action CollapseAllRegions<CR>
+nnoremap <leader>zo :action ExpandAllRegions<CR>
+
+map <C-p> <action>(GotoFile)
+map <C-f> <action>(FindInPath)
+map <C-m> <action>(FileStructurePopup)
+map <C-b> <Action>(RecentFiles)
+
+map <leader>q <action>(CloseContent)
+map <leader>w :w<CR>
+
+map ; <Action>(ShowErrorDescription)
+
+nmap <leader>aa <Action>(ShowIntentionActions)
+nmap <leader>ar <Action>(Refactorings.QuickListPopupAction)
+nmap <leader>ag <Action>(Generate)
+nmap <leader><leader> :action Switcher<CR>
+
+map [[ <Action>(MethodUp)
+map ]] <Action>(MethodDown)
+
+nmap <S-J> <Action>(MoveLineDown)
+nmap <S-K> <Action>(MoveLineUp)
+vmap <S-J> <Action>(MoveLineDown)
+vmap <S-K> <Action>(MoveLineUp)
+vmap <S-Y> <Action>(EditorJoinLines)
+nmap <S-Y> <Action>(EditorJoinLines)
+
+nmap <S-H> :tabprev<CR>
+nmap <S-L> :tabnext<CR>
+
+vnoremap < <gv
+vnoremap > >gv
+
+map <C-\> <Action>(MoveTabRight)
+map <C--> <Action>(MoveTabDown)
+map <C-BS> <Action>(Unsplit)
+
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+
+nmap <leader>d <Action>(GotoDeclaration)
+nmap <leader>gy <Action>(GotoTypeDeclaration)
+nmap <leader>gi <Action>(GotoImplementation)
+nmap <leader>u <Action>(ShowUsages)
+nmap <leader>gt <Action>(GotoTest)
+nmap <leader>gf <Action>(Back)
+nmap <leader>gb <Action>(Forward)
+"
+" map <leader>b <Action>(ToggleLineBreakpoint)
+" map <leader>o <Action>(FileStructurePopup)
+"
+" map <leader>J Ji <ESC>
+"
+" " Just makes me nervous
+" map H h
+"
+" " Toggle case and start typing. E.g. `<leader>iget`: `property` -> `getProperty`
+" map <leader>i ~hi
+" " Remove selection and toggle case. E.g. `v2l<leader>u`: `getProperty` -> `property`
+" vmap <leader>u d~h
+"
+" " I think it's a better solution
+map r <C-r>
