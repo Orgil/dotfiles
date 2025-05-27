@@ -135,8 +135,8 @@ nmap <leader>ar <Action>(Refactorings.QuickListPopupAction)
 nmap <leader>ag <Action>(Generate)
 nmap <leader><leader> :action Switcher<CR>
 
-map [[ <Action>(MethodUp)
-map ]] <Action>(MethodDown)
+map [[ <Action>(GotoPreviousError)
+map ]] <Action>(GotoNextError)
 
 nmap <S-J> <Action>(MoveLineDown)
 nmap <S-K> <Action>(MoveLineUp)
