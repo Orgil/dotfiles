@@ -42,6 +42,7 @@ Plug 'vim-scripts/ReplaceWithRegister'
 
 set NERDTree
 
+set easymotion 
 set which-key
 let g:WhichKey_ShowVimActions = "true"
 let g:WhichKey_DefaultDelay = 0
@@ -114,8 +115,8 @@ nmap <leader>ff <Action>(ReformatCode)
 nmap <Space>s <Plug>(easymotion-s2)  
 nmap <leader>o <Action>(MaximizeEditorInSplit)
 
-nnoremap <leader>zc :action CollapseAllRegions<CR>
-nnoremap <leader>zo :action ExpandAllRegions<CR>
+nnoremap <S-i> :action CollapseRegion<CR>
+nnoremap <S-o> :action ExpandRegion<CR>
 
 map <C-p> <action>(GotoFile)
 map <C-f> <action>(FindInPath)
@@ -128,6 +129,8 @@ map <leader>w :w<CR>
 map ; <Action>(ShowErrorDescription)
 
 nmap <leader>aa <Action>(ShowIntentionActions)
+nmap <leader>an <Action>(ReSharperNavigateTo)
+nmap <leader>ai <Action>(InspectThis)
 nmap <leader>ar <Action>(Refactorings.QuickListPopupAction)
 nmap <leader>ag <Action>(Generate)
 nmap <leader><leader> :action Switcher<CR>
