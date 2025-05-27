@@ -240,7 +240,7 @@ return {
 			end
 
 			require("mason-lspconfig").setup({ ensure_installed = ensure_installed })
-			require("mason-lspconfig").setup_handlers({ setup })
+			require("mason-lspconfig").setup({ setup })
 		end,
 	},
 	{
@@ -413,94 +413,94 @@ return {
 			end
 		end,
 	},
-	{
-		"mfussenegger/nvim-dap",
-		lazy = true,
-		config = function()
-			local mason_registry = require("mason-registry")
-			local codelldb = mason_registry.get_package("codelldb") -- note that this will error if you provide a non-existent package name
-			local codelldb_path = codelldb:get_install_path()
-
-			local dap = require("dap")
-			dap.adapters.codelldb = {
-				type = "server",
-				port = "${port}",
-				executable = {
-					-- CHANGE THIS to your path!
-					command = codelldb_path .. "/codelldb",
-					args = { "--port", "${port}" },
-
-					-- On windows you may have to uncomment this:
-					-- detached = false,
-				},
-			}
-
-			dap.configurations.cpp = {
-				{
-					name = "Launch codelldb",
-					type = "codelldb",
-					request = "launch",
-					program = function()
-						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-					end,
-					cwd = "${workspaceFolder}",
-					stopOnEntry = false,
-				},
-			}
-
-			dap.configurations.c = dap.configurations.cpp
-			dap.configurations.rust = dap.configurations.cpp
-
-			vim.keymap.set("n", "<F5>", dap.continue)
-			vim.keymap.set("n", "<F10>", dap.step_over)
-			vim.keymap.set("n", "<F11>", dap.step_into)
-			vim.keymap.set("n", "<F12>", dap.step_out)
-			vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint)
-			vim.keymap.set("n", "<Leader>lp", function()
-				dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-			end)
-			vim.keymap.set("n", "<Leader>dr", dap.repl.open)
-			vim.keymap.set("n", "<Leader>dl", dap.run_last)
-			vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
-				require("dap.ui.widgets").hover()
-			end)
-			vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
-				require("dap.ui.widgets").preview()
-			end)
-			vim.keymap.set("n", "<Leader>df", function()
-				local widgets = require("dap.ui.widgets")
-				widgets.centered_float(widgets.frames)
-			end)
-			vim.keymap.set("n", "<Leader>ds", function()
-				local widgets = require("dap.ui.widgets")
-				widgets.centered_float(widgets.scopes)
-			end)
-		end,
-	},
-	{
-		"leoluz/nvim-dap-go",
-		lazy = false,
-		config = function()
-			require("dap-go").setup()
-		end,
-	},
-	{
-		"rcarriga/nvim-dap-ui",
-		lazy = false,
-		dependencies = { "mfussenegger/nvim-dap" },
-		config = function()
-			require("dapui").setup()
-			local dap, dapui = require("dap"), require("dapui")
-			dap.listeners.after.event_initialized["dapui_config"] = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated["dapui_config"] = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited["dapui_config"] = function()
-				dapui.close()
-			end
-		end,
-	},
-	{ "theHamsta/nvim-dap-virtual-text", config = true, lazy = false },
+	-- {
+	-- 	"mfussenegger/nvim-dap",
+	-- 	lazy = true,
+	-- 	config = function()
+	-- 		local mason_registry = require("mason-registry")
+	-- 		local codelldb = mason_registry.get_package("codelldb") -- note that this will error if you provide a non-existent package name
+	-- 		local codelldb_path = codelldb:get_install_path()
+	--
+	-- 		local dap = require("dap")
+	-- 		dap.adapters.codelldb = {
+	-- 			type = "server",
+	-- 			port = "${port}",
+	-- 			executable = {
+	-- 				-- CHANGE THIS to your path!
+	-- 				command = codelldb_path .. "/codelldb",
+	-- 				args = { "--port", "${port}" },
+	--
+	-- 				-- On windows you may have to uncomment this:
+	-- 				-- detached = false,
+	-- 			},
+	-- 		}
+	--
+	-- 		dap.configurations.cpp = {
+	-- 			{
+	-- 				name = "Launch codelldb",
+	-- 				type = "codelldb",
+	-- 				request = "launch",
+	-- 				program = function()
+	-- 					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+	-- 				end,
+	-- 				cwd = "${workspaceFolder}",
+	-- 				stopOnEntry = false,
+	-- 			},
+	-- 		}
+	--
+	-- 		dap.configurations.c = dap.configurations.cpp
+	-- 		dap.configurations.rust = dap.configurations.cpp
+	--
+	-- 		vim.keymap.set("n", "<F5>", dap.continue)
+	-- 		vim.keymap.set("n", "<F10>", dap.step_over)
+	-- 		vim.keymap.set("n", "<F11>", dap.step_into)
+	-- 		vim.keymap.set("n", "<F12>", dap.step_out)
+	-- 		vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint)
+	-- 		vim.keymap.set("n", "<Leader>lp", function()
+	-- 			dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+	-- 		end)
+	-- 		vim.keymap.set("n", "<Leader>dr", dap.repl.open)
+	-- 		vim.keymap.set("n", "<Leader>dl", dap.run_last)
+	-- 		vim.keymap.set({ "n", "v" }, "<Leader>dh", function()
+	-- 			require("dap.ui.widgets").hover()
+	-- 		end)
+	-- 		vim.keymap.set({ "n", "v" }, "<Leader>dp", function()
+	-- 			require("dap.ui.widgets").preview()
+	-- 		end)
+	-- 		vim.keymap.set("n", "<Leader>df", function()
+	-- 			local widgets = require("dap.ui.widgets")
+	-- 			widgets.centered_float(widgets.frames)
+	-- 		end)
+	-- 		vim.keymap.set("n", "<Leader>ds", function()
+	-- 			local widgets = require("dap.ui.widgets")
+	-- 			widgets.centered_float(widgets.scopes)
+	-- 		end)
+	-- 	end,
+	-- },
+	-- {
+	-- 	"leoluz/nvim-dap-go",
+	-- 	lazy = false,
+	-- 	config = function()
+	-- 		require("dap-go").setup()
+	-- 	end,
+	-- },
+	-- {
+	-- 	"rcarriga/nvim-dap-ui",
+	-- 	lazy = false,
+	-- 	dependencies = { "mfussenegger/nvim-dap" },
+	-- 	config = function()
+	-- 		require("dapui").setup()
+	-- 		local dap, dapui = require("dap"), require("dapui")
+	-- 		dap.listeners.after.event_initialized["dapui_config"] = function()
+	-- 			dapui.open()
+	-- 		end
+	-- 		dap.listeners.before.event_terminated["dapui_config"] = function()
+	-- 			dapui.close()
+	-- 		end
+	-- 		dap.listeners.before.event_exited["dapui_config"] = function()
+	-- 			dapui.close()
+	-- 		end
+	-- 	end,
+	-- },
+	-- { "theHamsta/nvim-dap-virtual-text", config = true, lazy = false },
 }
