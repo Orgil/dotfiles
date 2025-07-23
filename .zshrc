@@ -115,9 +115,11 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+
 # pnpm end
 export GOPRIVATE="github.com/mastercode-projects/master-bus-go"
 export PATH=$(go env GOPATH)/bin:$PATH
+#
 #
 eval "$(starship init zsh)"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
