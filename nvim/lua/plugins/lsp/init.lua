@@ -62,9 +62,9 @@ return {
 			autoformat = true,
 			servers = {
 				tailwindcss = {},
-				solidity_ls_nomicfoundation = {
-					mason = false,
-				},
+				-- solidity_ls_nomicfoundation = {
+				-- 	mason = false,
+				-- },
 				jsonls = {
 					-- lazy-load schemastore when needed
 					on_new_config = function(new_config)
@@ -273,6 +273,8 @@ return {
 	},
 	{
 		"stevearc/conform.nvim",
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
 		dependencies = { "mason.nvim" },
 		-- keys = {
 		--   {
@@ -289,13 +291,15 @@ return {
 				lua = { "stylua" },
 				-- Conform will run multiple formatters sequentially
 				-- Use a sub-list to run only the first available formatter
-				javascript = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
-				javascriptreact = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
-				typescript = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
-				typescriptreact = { "eslint_d", "eslint", "prettierd", "prettier", stop_after_first = true },
-				css = { "stylelint" },
+				javascript = { "biome", "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+				typescript = { "biome", "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+				json = { "biome" },
+				jsonc = { "biome" },
+				css = { "biome" },
+				graphql = { "biome" },
 				go = { "goimports", "golines" },
-				proto = { "buf" },
 				sql = { "sql_formatter" },
 				["*"] = { "injected" },
 			},
@@ -330,10 +334,6 @@ return {
 		opts = {
 			-- Event to trigger linters
 			linters_by_ft = {
-				javascript = { "eslint_d" },
-				javascriptreact = { "eslint_d" },
-				typescript = { "eslint_d" },
-				typescriptreact = { "eslint_d" },
 				go = { "golangcilint" },
 				yaml = { "yamllint" },
 				css = { "stylelint" },
@@ -424,7 +424,6 @@ return {
 				"delve",
 				"goimports",
 				"golines",
-				"eslint_d",
 				"yamllint",
 				"protolint",
 				"sql-formatter",
