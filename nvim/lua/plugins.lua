@@ -354,4 +354,5 @@ return {
 		end,
 	},
 	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow", lazy = true },
+	{ "wakatime/vim-wakatime", lazy = false },
 }
