@@ -14,7 +14,7 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"hrsh7th/cmp-nvim-lsp",
-			"simrat39/rust-tools.nvim",
+			"mrcjkb/rustaceanvim",
 			-- "jose-elias-alvarez/typescript.nvim",
 			"p00f/clangd_extensions.nvim",
 			{

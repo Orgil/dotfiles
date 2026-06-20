@@ -11,6 +11,7 @@ return {
 		name = "tokyonight",
 		lazy = true, -- make sure we load this during startup if it is your main colorscheme
 	},
+	{ "folke/persistence.nvim", event = "BufReadPre", opts = {} },
 	{
 		"EdenEast/nightfox.nvim",
 		lazy = false,
@@ -120,13 +121,12 @@ return {
 		lazy = false,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
-			indent_lines = false,
-			padding = 1,
+			indent_guides = false,
 			auto_close = true,
 		},
 		config = function(_, opts)
 			require("trouble").setup(opts)
-			map("n", "<F3>", ":TroubleToggle workspace_diagnostics<cr>")
+			map("n", "<F3>", "<cmd>Trouble diagnostics toggle<cr>")
 		end,
 	},
 	-- {
@@ -256,20 +256,13 @@ return {
 		end,
 	},
 	{
-		"stevearc/dressing.nvim",
-		lazy = true,
-		init = function()
-			---@diagnostic disable-next-line: duplicate-set-field
-			vim.ui.select = function(...)
-				require("lazy").load({ plugins = { "dressing.nvim" } })
-				return vim.ui.select(...)
-			end
-			---@diagnostic disable-next-line: duplicate-set-field
-			vim.ui.input = function(...)
-				require("lazy").load({ plugins = { "dressing.nvim" } })
-				return vim.ui.input(...)
-			end
-		end,
+		"folke/snacks.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {
+			input = { enabled = true },
+			picker = { enabled = true, ui_select = true },
+		},
 	},
 	{
 		"anuvyklack/pretty-fold.nvim",
@@ -353,6 +346,11 @@ return {
 			})
 		end,
 	},
-	{ "ellisonleao/glow.nvim", config = true, cmd = "Glow", lazy = true },
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		ft = "markdown",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+		config = true,
+	},
 	{ "wakatime/vim-wakatime", lazy = false },
 }
