@@ -1,7 +1,18 @@
 local map = require("utils").map
 
+---@param bufnr integer
+---@return fun(mode: string|string[], lhs: string, rhs: string|function, opts?: table)
+local function bufmap(bufnr)
+	return function(mode, lhs, rhs, opts)
+		opts = opts and vim.deepcopy(opts) or {}
+		opts.buffer = bufnr
+		map(mode, lhs, rhs, opts)
+	end
+end
+
 return {
-	default = function()
+	default = function(bufnr)
+		local map = bufmap(bufnr)
     -- stylua: ignore start
     map("n", "<leader>gt", vim.lsp.buf.type_definition)
     map("n", "<leader>gd", vim.lsp.buf.declaration, { desc = "Go to declaration" })
@@ -43,12 +54,14 @@ return {
 			vim.lsp.buf.format({ async = true })
 		end)
 	end,
-	tsserver = function()
+	tsserver = function(bufnr)
+		local map = bufmap(bufnr)
     -- stylua: ignore start
     map("n", "<leader>d", ":TypescriptGoToSourceDefinition<cr>", { desc = "Go to definition" })
 		-- stylua: ignore end
 	end,
-	rust_analyzer = function()
+	rust_analyzer = function(bufnr)
+		local map = bufmap(bufnr)
 		-- Hover actions
 		map("n", ";", function()
 			vim.cmd.RustLsp({ "hover", "actions" })

@@ -93,7 +93,7 @@ return {
 							},
 							experimentalPostfixCompletions = true,
 							gofumpt = true,
-							staticcheck = true,
+							staticcheck = false,
 							usePlaceholders = true,
 							hints = {
 								assignVariableTypes = true,
@@ -204,9 +204,9 @@ return {
 					-- end
 
 					local keymaps = require("plugins.lsp.keymaps")
-					keymaps.default()
+					keymaps.default(args.buf)
 					if keymaps and keymaps[client.name] then
-						keymaps[client.name]()
+						keymaps[client.name](args.buf)
 					end
 				end,
 			})
