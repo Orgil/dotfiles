@@ -1,5 +1,4 @@
 local map = require("utils").map
-local rt = require("rust-tools")
 
 return {
 	default = function()
@@ -51,8 +50,12 @@ return {
 	end,
 	rust_analyzer = function()
 		-- Hover actions
-		map("n", ";", rt.hover_actions.hover_actions)
+		map("n", ";", function()
+			vim.cmd.RustLsp({ "hover", "actions" })
+		end)
 		-- Code action groups
-		map("n", "<leader>a", rt.code_action_group.code_action_group)
+		map("n", "<leader>a", function()
+			vim.cmd.RustLsp("codeAction")
+		end)
 	end,
 }

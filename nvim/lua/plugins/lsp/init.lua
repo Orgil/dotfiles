@@ -14,7 +14,6 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"hrsh7th/cmp-nvim-lsp",
-			"mrcjkb/rustaceanvim",
 			-- "jose-elias-alvarez/typescript.nvim",
 			"p00f/clangd_extensions.nvim",
 			{
@@ -117,7 +116,6 @@ return {
 						},
 					},
 				},
-				rust_analyzer = {},
 				lua_ls = {
 					-- mason = false, -- set to false if you don't want this server to be installed with mason
 					settings = {
@@ -173,24 +171,6 @@ return {
 			setup = {
 				clangd = function(_, opts)
 					require("clangd_extensions").setup(opts)
-					return true
-				end,
-				rust_analyzer = function(_, opts)
-					require("rust-tools").setup({
-						tools = {
-							autoSetHints = true,
-							runnables = {
-								use_telescope = true,
-							},
-							inlay_hints = {
-								only_current_line = true,
-								show_parameter_hints = false,
-								parameter_hints_prefix = "",
-								other_hints_prefix = "",
-							},
-						},
-						server = opts,
-					})
 					return true
 				end,
 			},
@@ -251,7 +231,8 @@ return {
 						return
 					end
 				end
-				require("lspconfig")[server].setup(server_opts)
+				vim.lsp.config(server, server_opts)
+				vim.lsp.enable(server)
 			end
 
 			local mlsp = require("mason-lspconfig")
@@ -446,6 +427,7 @@ return {
 				"yamllint",
 				"protolint",
 				"sql-formatter",
+				"rust-analyzer",
 			},
 		},
 		config = function(_, opts)
@@ -457,6 +439,20 @@ return {
 					p:install()
 				end
 			end
+		end,
+	},
+	{
+		"mrcjkb/rustaceanvim",
+		version = "^6",
+		lazy = false, -- this plugin is already lazy
+		init = function()
+			vim.g.rustaceanvim = {
+				server = {
+					default_settings = {
+						["rust-analyzer"] = {},
+					},
+				},
+			}
 		end,
 	},
 	-- {
