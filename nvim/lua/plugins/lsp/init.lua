@@ -61,6 +61,9 @@ return {
 			},
 			autoformat = true,
 			servers = {
+				biome = {
+					mason = false,
+				},
 				tailwindcss = {},
 				-- solidity_ls_nomicfoundation = {
 				-- 	mason = false,
@@ -267,8 +270,14 @@ return {
 				end
 			end
 
-			require("mason-lspconfig").setup({ ensure_installed = ensure_installed })
-			require("mason-lspconfig").setup({ setup })
+			require("mason-lspconfig").setup({
+				ensure_installed = ensure_installed,
+				automatic_enable = false,
+			})
+
+			for server in pairs(servers) do
+				setup(server)
+			end
 		end,
 	},
 	{
@@ -276,16 +285,32 @@ return {
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo" },
 		dependencies = { "mason.nvim" },
-		-- keys = {
-		--   {
-		--     "<leader>ff",
-		--     function()
-		--       require("conform").format({ formatters = { "injected" } })
-		--     end,
-		--     mode = { "n", "v" },
-		--     desc = "Format Injected Langs"
-		--   }
-		-- },
+		keys = {
+			{
+				"<leader>ff",
+				function()
+					local conform = require("conform")
+					local bufnr = vim.api.nvim_get_current_buf()
+					local infos = conform.list_formatters(bufnr)
+
+					local has_real_formatter = false
+					for _, info in ipairs(infos) do
+						if info.name ~= "injected" and info.available then
+							has_real_formatter = true
+							break
+						end
+					end
+
+					if has_real_formatter then
+						conform.format({ async = true, lsp_format = "fallback" })
+					else
+						conform.format({ formatters = { "injected" } })
+					end
+				end,
+				mode = { "n", "v" },
+				desc = "Format Injected Langs",
+			},
+		},
 		opts = {
 			formatters_by_ft = {
 				lua = { "stylua" },
@@ -308,7 +333,7 @@ return {
 				injected = { options = { ignore_errors = true } },
 			},
 			format_on_save = {
-				lsp_fallback = true,
+				lsp_format = "fallback",
 				async = false,
 				timeout_ms = 500,
 			},
@@ -316,12 +341,6 @@ return {
 		config = function(_, opts)
 			require("conform").formatters.sql_formatter =
 				{ prepend_args = { "-c", vim.fn.expand("$HOME/.config/nvim/sql-formatter.json") } }
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = vim.api.nvim_create_augroup("LazyFormat", {}),
-				callback = function(event)
-					require("conform").format({ buf = event.buf })
-				end,
-			})
 			require("conform").setup(opts)
 		end,
 	},
