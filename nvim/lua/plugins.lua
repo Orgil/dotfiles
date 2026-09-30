@@ -7,7 +7,7 @@ return {
 		lazy = false,
 		priority = 1000, -- load before the other start plugins
 		opts = {
-			flavour = "mocha", -- latte | frappe | macchiato | mocha
+			flavour = "macchiato", -- latte | frappe | macchiato | mocha
 			integrations = {
 				blink_cmp = true,
 				flash = true,
