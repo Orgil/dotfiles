@@ -49,16 +49,6 @@ return {
 			vim.lsp.buf.code_action()
 		end)
 		map("n", "<leader>r", vim.lsp.buf.rename)
-
-		map("n", "<leader>ff", function()
-			vim.lsp.buf.format({ async = true })
-		end)
-	end,
-	tsserver = function(bufnr)
-		local map = bufmap(bufnr)
-    -- stylua: ignore start
-    map("n", "<leader>d", ":TypescriptGoToSourceDefinition<cr>", { desc = "Go to definition" })
-		-- stylua: ignore end
 	end,
 	rust_analyzer = function(bufnr)
 		local map = bufmap(bufnr)

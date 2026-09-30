@@ -25,6 +25,7 @@ return {
 			-- options for vim.diagnostic.config()
 			diagnostics = {
 				-- underline = true,
+				-- signs.text is filled from utils.icons in config()
 				signs = true,
 				update_in_insert = false,
 				severity_sort = true,
@@ -33,22 +34,15 @@ return {
 					focusable = false,
 					header = { "", "Normal" },
 					prefix = "",
-					source = "always",
+					source = true,
 				},
 				virtual_text = {
 					spacing = 4,
-					source = "always",
+					source = true,
 					severity = {
 						min = vim.diagnostic.severity.HINT,
 					},
 				},
-			},
-			inlay_hints = {
-				enabled = true,
-				exclude = { "vue" }, -- filetypes for which you don't want to enable inlay hints
-			},
-			document_highlight = {
-				enabled = true,
 			},
 			capabilities = {
 				workspace = {
@@ -58,20 +52,26 @@ return {
 					},
 				},
 			},
-			autoformat = true,
 			servers = {
 				biome = {
 					mason = false,
 				},
 				tailwindcss = {},
+				graphql = {
+					filetypes = { "graphql" },
+				},
 				-- solidity_ls_nomicfoundation = {
 				-- 	mason = false,
 				-- },
 				jsonls = {
 					-- lazy-load schemastore when needed
-					on_new_config = function(new_config)
-						new_config.settings.json.schemas = new_config.settings.json.schemas or {}
-						vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
+					before_init = function(_, config)
+						config.settings = config.settings or {}
+						config.settings.json = config.settings.json or {}
+						config.settings.json.schemas = vim.list_extend(
+							vim.deepcopy(config.settings.json.schemas or {}),
+							require("schemastore").json.schemas()
+						)
 					end,
 					settings = {
 						json = {
@@ -108,9 +108,7 @@ return {
 					},
 				},
 				clangd = {
-					server = {
-						filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
-					},
+					filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 				},
 				yamlls = {
 					settings = {
@@ -172,9 +170,10 @@ return {
 				},
 			},
 			setup = {
-				clangd = function(_, opts)
-					require("clangd_extensions").setup(opts)
-					return true
+				clangd = function()
+					require("clangd_extensions").setup({})
+					-- fall through so the server is still configured and enabled
+					return false
 				end,
 			},
 		},
@@ -212,15 +211,23 @@ return {
 			})
 
 			-- diagnostics
-			for name, icon in pairs(require("utils").icons.diagnostics) do
-				name = "DiagnosticSign" .. name
-				vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-			end
+			local icons = require("utils").icons.diagnostics
+			opts.diagnostics.signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = icons.Error,
+					[vim.diagnostic.severity.WARN] = icons.Warn,
+					[vim.diagnostic.severity.INFO] = icons.Info,
+					[vim.diagnostic.severity.HINT] = icons.Hint,
+				},
+			}
 			vim.diagnostic.config(opts.diagnostics)
 
 			local servers = opts.servers
-			local capabilities =
-				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+			local capabilities = vim.tbl_deep_extend(
+				"force",
+				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+				opts.capabilities or {}
+			)
 
 			local function setup(server)
 				local server_opts = servers[server] or {}
@@ -242,12 +249,14 @@ return {
 			local available = mlsp.get_available_servers()
 
 			local ensure_installed = {} ---@type string[]
+			local configured = {} ---@type table<string, boolean>
 			for server, server_opts in pairs(servers) do
 				if server_opts then
 					server_opts = server_opts == true and {} or server_opts
 					-- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
 					if server_opts.mason == false or not vim.tbl_contains(available, server) then
 						setup(server)
+						configured[server] = true
 					else
 						ensure_installed[#ensure_installed + 1] = server
 					end
@@ -260,7 +269,9 @@ return {
 			})
 
 			for server in pairs(servers) do
-				setup(server)
+				if not configured[server] then
+					setup(server)
+				end
 			end
 		end,
 	},
@@ -278,15 +289,17 @@ return {
 					local infos = conform.list_formatters(bufnr)
 
 					local has_real_formatter = false
+					local names = {}
 					for _, info in ipairs(infos) do
 						if info.name ~= "injected" and info.available then
 							has_real_formatter = true
-							break
 						end
+						-- biome-check also applies lint fixes (import type, organize imports); only on <leader>ff
+						table.insert(names, info.name == "biome" and "biome-check" or info.name)
 					end
 
 					if has_real_formatter then
-						conform.format({ async = true, lsp_format = "fallback" })
+						conform.format({ formatters = names, async = true, lsp_format = "fallback" })
 					else
 						conform.format({ formatters = { "injected" } })
 					end
@@ -313,7 +326,6 @@ return {
 				["*"] = { "injected" },
 			},
 			formatters = {
-				stdin = false,
 				injected = { options = { ignore_errors = true } },
 			},
 			format_on_save = {
@@ -390,7 +402,7 @@ return {
 			end
 
 			function M.debounce(ms, fn)
-				local timer = vim.loop.new_timer()
+				local timer = vim.uv.new_timer()
 				return function(...)
 					local argv = { ... }
 					timer:start(ms, 0, function()

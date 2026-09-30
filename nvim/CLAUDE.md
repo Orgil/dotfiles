@@ -33,7 +33,7 @@ Plugin specs are split into two layers, both picked up by the `{ import = "plugi
   - `init.lua` defines `nvim-lspconfig` (with per-server `settings`/`setup` overrides, e.g. `gopls`,
     `vtsls`, `clangd`, `rust_analyzer`, `lua_ls`), plus `conform.nvim` (formatters by filetype) and
     `nvim-lint` (linters by filetype) as sibling specs in the same returned list.
-  - `keymaps.lua` exports a table keyed by LSP client name (`default`, `tsserver`, `rust_analyzer`,
+  - `keymaps.lua` exports a table keyed by LSP client name (`default`, `rust_analyzer`,
     ...). `init.lua`'s `LspAttach` autocmd always calls `keymaps.default()`, then calls
     `keymaps[client.name]()` if it exists — this is how per-server keymaps (e.g. rust-tools hover
     actions) are layered on top of the defaults.
