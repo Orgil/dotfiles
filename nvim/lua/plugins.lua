@@ -44,7 +44,14 @@ return {
 	},
 	{ "folke/lazydev.nvim", ft = "lua" },
 	{ "folke/neoconf.nvim", cmd = "Neoconf" },
-	{ "numToStr/Comment.nvim", config = true },
+	{
+		"numToStr/Comment.nvim",
+		keys = {
+			{ "gc", mode = { "n", "x" }, desc = "Comment (line/motion)" },
+			{ "gb", mode = { "n", "x" }, desc = "Comment (block)" },
+		},
+		config = true,
+	},
 	{ "NvChad/nvim-colorizer.lua", event = { "BufReadPre", "BufNewFile" }, config = true },
 	{ "nacro90/numb.nvim", event = "VeryLazy", config = true },
 	{ "chaoren/vim-wordmotion" },
@@ -106,16 +113,13 @@ return {
 	{ "tpope/vim-repeat" },
 	{
 		"folke/trouble.nvim",
-		lazy = false,
+		cmd = "Trouble",
+		keys = { { "<F3>", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" } },
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
 			indent_guides = false,
 			auto_close = true,
 		},
-		config = function(_, opts)
-			require("trouble").setup(opts)
-			map("n", "<F3>", "<cmd>Trouble diagnostics toggle<cr>")
-		end,
 	},
 	-- {
 	-- 	"gbprod/yanky.nvim",
@@ -131,14 +135,11 @@ return {
 	-- },
 	{
 		"folke/zen-mode.nvim",
-		lazy = false,
+		cmd = "ZenMode",
+		keys = { { "<leader>o", "<cmd>ZenMode<cr>", desc = "Zen mode" } },
 		opts = {
 			window = { width = 160 },
 		},
-		config = function(_, opts)
-			require("zen-mode").setup(opts)
-			map("n", "<leader>o", ":ZenMode<cr>")
-		end,
 	},
 	{
 		"nanozuki/tabby.nvim",
@@ -201,6 +202,8 @@ return {
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
+		cmd = "ToggleTerm",
+		keys = { { "<leader>ft", "<cmd>ToggleTerm size=20 direction=float<cr>", desc = "Terminal" } },
 		opts = {
 			direction = "float",
 			border = "curved",
@@ -224,13 +227,13 @@ return {
 
 			-- if you only want these mappings for toggle term use term://*toggleterm#* instead
 			vim.cmd("autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()")
-			map("n", "<leader>ft", ":ToggleTerm size=20 direction=float<cr>")
 		end,
 	},
 	{
 		"mbbill/undotree",
-		lazy = false,
-		config = function()
+		cmd = "UndotreeToggle",
+		keys = { { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undotree" } },
+		init = function()
 			vim.g.undotree_WindowLayout = 3
 			vim.g.undotree_SplitWidth = 60
 			vim.g.undotree_DiffpanelHeight = 20
@@ -240,7 +243,6 @@ return {
 			vim.g.undotree_TreeSplitShape = "╱"
 			vim.g.undotree_TreeReturnShape = "╲"
 			vim.g.undotree_TreeNodeShape = ""
-			map("n", "<leader>u", vim.cmd.UndotreeToggle)
 		end,
 	},
 	{
