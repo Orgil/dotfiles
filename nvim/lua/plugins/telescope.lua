@@ -1,7 +1,7 @@
 return {
 	{
 		"nvim-telescope/telescope.nvim",
-		branch = "0.1.x",
+		branch = "master",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{
@@ -16,7 +16,19 @@ return {
 				defaults = {
 					prompt_prefix = " ❯ ",
 					selection_caret = "❯ ",
-					file_ignore_patterns = { ".git/*", "node_modules/.*", "%.import", ".import/*", "%.lock" },
+					file_ignore_patterns = {
+						".git/",
+						"node_modules/",
+						"%.import",
+						".import/",
+						"%.lock",
+						"pnpm%-lock%.yaml",
+						"package%-lock%.json",
+						"dist/",
+						"%.history/",
+						"%.min%.js",
+						"%.map",
+					},
 					vimgrep_arguments = {
 						"rg",
 						"--ignore",
@@ -32,6 +44,22 @@ return {
 						"!*.svg",
 						"-g",
 						"!*.lock",
+						"-g",
+						"!pnpm-lock.yaml",
+						"-g",
+						"!package-lock.json",
+						"-g",
+						"!*.min.js",
+						"-g",
+						"!*.map",
+						"-g",
+						"!.git/",
+						"-g",
+						"!node_modules/",
+						"-g",
+						"!dist/",
+						"-g",
+						"!.history/",
 					},
 					mappings = {
 						i = {
@@ -90,7 +118,7 @@ return {
 			)
 			map(
 				"n",
-				"<c-m>",
+				"<leader>s",
 				"<cmd>lua require'telescope'.extensions.aerial.aerial(require('telescope.themes').get_dropdown({ previewer = false }))<cr>"
 			)
 			map("n", "<c-f>", "<cmd>Telescope live_grep<cr>")

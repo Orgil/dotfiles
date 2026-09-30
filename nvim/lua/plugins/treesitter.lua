@@ -1,71 +1,94 @@
+-- nvim-treesitter `main` branch: no module system (highlight/ensure_installed opts are gone).
+-- Parsers are installed with `install()`, and highlight/fold are started per-buffer below.
+local parsers = {
+		"bash",
+		"c",
+		"c_sharp",
+		"cmake",
+		"comment",
+		"cpp",
+		"css",
+		"diff",
+		"dockerfile",
+		"dot",
+		"func",
+		"gdscript",
+		"godot_resource",
+		"git_rebase",
+		"gitattributes",
+		"gitcommit",
+		"gitignore",
+		"glsl",
+		"hlsl",
+		"go",
+		"gomod",
+		"gowork",
+		"gosum",
+		"graphql",
+		"vimdoc",
+		"regex",
+		"html",
+		"http",
+		"ini",
+		"javascript",
+		"jq",
+		"jsdoc",
+		"json",
+		"jsonc",
+		"json5",
+		"llvm",
+		"lua",
+		"make",
+		"markdown",
+		"markdown_inline",
+		"proto",
+		"scss",
+		"solidity",
+		"todotxt",
+		"tsx",
+		"vim",
+		"yaml",
+		"sql",
+		"typescript",
+}
+
 return {
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		version = false,
+		lazy = false,
 		build = ":TSUpdate",
-		event = "BufReadPost",
-		keys = {
-			{ "<S-space>", desc = "Increment selection" },
-			{ "<bs>", desc = "Schrink selection", mode = "x" },
-		},
-		opts = {
-			highlight = { enable = true, additional_vim_regex_highlighting = true, use_languagetree = true },
-			context_commentstring = { enable = true, enable_autocmd = false },
-			ensure_installed = {
-				"bash",
-				"c",
-				"c_sharp",
-				"cmake",
-				"comment",
-				"cpp",
-				"css",
-				"diff",
-				"dockerfile",
-				"dot",
-				"func",
-				"gdscript",
-				"godot_resource",
-				"git_rebase",
-				"gitattributes",
-				"gitcommit",
-				"gitignore",
-				"glsl",
-				"hlsl",
-				"go",
-				"gomod",
-				"gowork",
-				"gosum",
-				"graphql",
-				"vimdoc",
-				"regex",
-				"html",
-				"http",
-				"ini",
-				"javascript",
-				"jq",
-				"jsdoc",
-				"json",
-				"jsonc",
-				"json5",
-				"llvm",
-				"lua",
-				"make",
-				"markdown",
-				"markdown_inline",
-				"proto",
-				"scss",
-				"solidity",
-				"todotxt",
-				"tsx",
-				"vim",
-				"yaml",
-				"sql",
-				"typescript",
-			},
-		},
-		config = function(_, opts)
-			require("nvim-treesitter.config").setup(opts)
+		config = function()
+			local ts = require("nvim-treesitter")
+			ts.setup({})
+
+			-- install only parsers that exist and are missing (install() is async and needs the tree-sitter CLI)
+			local available = ts.get_available()
+			local installed = ts.get_installed()
+			local missing = vim.tbl_filter(function(lang)
+				return vim.tbl_contains(available, lang) and not vim.tbl_contains(installed, lang)
+			end, parsers)
+			if #missing > 0 then
+				if vim.fn.executable("tree-sitter") == 1 then
+					ts.install(missing)
+				else
+					vim.notify("nvim-treesitter: `tree-sitter` CLI not found, skipping parser install", vim.log.levels.WARN)
+				end
+			end
+
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					if vim.b[args.buf].bigfile then
+						return
+					end
+					local lang = vim.treesitter.language.get_lang(args.match)
+					if not lang or not pcall(vim.treesitter.start, args.buf, lang) then
+						return
+					end
+					vim.wo[0][0].foldmethod = "expr"
+					vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+				end,
+			})
 		end,
 	},
-	-- { "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" },
 }

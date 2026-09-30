@@ -6,6 +6,7 @@ opt.background = "dark"
 opt.encoding = "utf-8"
 opt.number = true
 opt.cursorline = true
+opt.synmaxcol = 300 -- stop syntax highlighting long lines
 opt.tabstop = 2
 opt.expandtab = true
 opt.softtabstop = 2
@@ -19,8 +20,6 @@ vim.opt.fillchars:append("fold:•")
 opt.foldlevel = 99
 opt.foldlevelstart = -1
 -- opt.foldlevelstart = 99
-opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.signcolumn = "yes"
 opt.backup = false
 opt.writebackup = false
@@ -60,7 +59,59 @@ if vim.fn.has("nvim-0.9.0") == 1 then
 	vim.opt.shortmess:append({ C = true })
 end
 
-vim.api.nvim_create_autocmd({ "BufEnter" }, { pattern = { "*" }, command = "normal zx" })
+-- Big files: skip the expensive stuff (folds, indent guides, rainbow); syntax highlight stays, capped by synmaxcol
+-- Huge files additionally skip the LSP
+local bigfile_size = 256 * 1024 -- 256KB
+local hugefile_size = 2 * 1024 * 1024 -- 2MB
+
+vim.api.nvim_create_autocmd("BufReadPre", {
+	callback = function(args)
+		local ok, stat = pcall(vim.uv.fs_stat, args.file)
+		if ok and stat and stat.size > bigfile_size then
+			vim.b[args.buf].bigfile = true
+			vim.b[args.buf].hugefile = stat.size > hugefile_size
+			vim.opt_local.foldmethod = "manual"
+			vim.opt_local.cursorline = false
+			vim.opt_local.swapfile = false
+			vim.opt_local.undofile = false
+			vim.opt_local.spell = false
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
+	callback = function(args)
+		if not vim.b[args.buf].bigfile then
+			return
+		end
+		vim.opt_local.foldmethod = "manual"
+		pcall(function()
+			require("ibl").setup_buffer(args.buf, { enabled = false })
+		end)
+		pcall(function()
+			require("rainbow-delimiters").disable(args.buf)
+		end)
+	end,
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		if vim.b[args.buf].hugefile then
+			vim.schedule(function()
+				vim.lsp.buf_detach_client(args.buf, args.data.client_id)
+			end)
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	pattern = { "*" },
+	callback = function(args)
+		if not vim.b[args.buf].bigfile then
+			vim.cmd("normal zx")
+		end
+	end,
+})
 
 -- Fix markdown indentation settings
 g.markdown_recommended_style = 0
