@@ -5,7 +5,7 @@ return {
 		opts = {
 			options = {
 				globalstatus = true,
-				disabled_filetypes = { "Trouble", "neo-tree", "neo-tree-popup", "alpha", "NvimTree" },
+				disabled_filetypes = { "Trouble", "alpha", "NvimTree" },
 			},
 			sections = {
 				lualine_a = { "mode" },

@@ -50,3 +50,7 @@ map("n", "<cr>", ":noh<cr>")
 map("n", "<leader><leader>", "<c-^>")
 
 map("n", "<f10>", '<cmd>echo "hi:".synIDattr(synID(line("."),col("."),0),"name")<cr>')
+
+-- side scroll (was a hydra on `z`)
+map("n", "zh", "5zh")
+map("n", "zl", "5zl")
