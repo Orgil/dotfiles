@@ -4,7 +4,26 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		branch = "main",
-		lazy = true, -- make sure we load this during startup if it is your main colorscheme
+		lazy = false,
+		priority = 1000, -- load before the other start plugins
+		opts = {
+			flavour = "mocha", -- latte | frappe | macchiato | mocha
+			integrations = {
+				blink_cmp = true,
+				flash = true,
+				gitsigns = true,
+				mini = { enabled = true },
+				noice = true,
+				nvimtree = true,
+				snacks = { enabled = true },
+				treesitter_context = true,
+				which_key = true,
+			},
+		},
+		config = function(_, opts)
+			require("catppuccin").setup(opts)
+			vim.cmd.colorscheme("catppuccin")
+		end,
 	},
 	{
 		"folke/tokyonight.nvim",
@@ -14,8 +33,7 @@ return {
 	{ "folke/persistence.nvim", event = "BufReadPre", opts = {} },
 	{
 		"EdenEast/nightfox.nvim",
-		lazy = false,
-		priority = 1000, -- make sure to load this before all the other start plugins
+		lazy = true, -- :colorscheme duskfox (set up in config below when loaded)
 		opts = {
 			options = {
 				styles = {
@@ -27,8 +45,6 @@ return {
 		config = function(_, opts)
 			-- load the colorscheme here
 			require("nightfox").setup(opts)
-
-			vim.cmd([[colorscheme duskfox]])
 		end,
 	},
 	{
