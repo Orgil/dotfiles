@@ -18,8 +18,7 @@ vim.opt.fillchars:append("fold:•")
 -- opt.foldenable = true
 -- opt.foldcolumn = "1"
 opt.foldlevel = 99
-opt.foldlevelstart = -1
--- opt.foldlevelstart = 99
+opt.foldlevelstart = 99 -- nvim-ufo: start with all folds open
 opt.signcolumn = "yes"
 opt.backup = false
 opt.writebackup = false
@@ -85,6 +84,9 @@ vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
 			return
 		end
 		vim.opt_local.foldmethod = "manual"
+		pcall(function()
+			require("ufo").detach(args.buf)
+		end)
 		pcall(function()
 			require("ibl").setup_buffer(args.buf, { enabled = false })
 		end)

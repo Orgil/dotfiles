@@ -36,13 +36,7 @@ return {
 					prefix = "",
 					source = true,
 				},
-				virtual_text = {
-					spacing = 4,
-					source = true,
-					severity = {
-						min = vim.diagnostic.severity.HINT,
-					},
-				},
+				virtual_text = false, -- rendered by tiny-inline-diagnostic.nvim
 			},
 			capabilities = {
 				workspace = {

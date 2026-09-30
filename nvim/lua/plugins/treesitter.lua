@@ -1,5 +1,5 @@
 -- nvim-treesitter `main` branch: no module system (highlight/ensure_installed opts are gone).
--- Parsers are installed with `install()`, and highlight/fold are started per-buffer below.
+-- Parsers are installed with `install()`, and highlight is started per-buffer below (folds are handled by nvim-ufo).
 local parsers = {
 		"bash",
 		"c",
@@ -82,11 +82,10 @@ return {
 						return
 					end
 					local lang = vim.treesitter.language.get_lang(args.match)
-					if not lang or not pcall(vim.treesitter.start, args.buf, lang) then
+					if not lang then
 						return
 					end
-					vim.wo[0][0].foldmethod = "expr"
-					vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+					pcall(vim.treesitter.start, args.buf, lang)
 				end,
 			})
 		end,

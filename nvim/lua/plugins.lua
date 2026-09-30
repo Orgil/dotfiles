@@ -249,27 +249,6 @@ return {
 			picker = { enabled = true, ui_select = true },
 		},
 	},
-	{
-		"anuvyklack/pretty-fold.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("pretty-fold").setup({
-				keep_indentation = true,
-				fill_char = "•",
-				sections = {
-					left = {
-						"content",
-					},
-					right = {
-						" ",
-						"number_of_folded_lines",
-						" ",
-						"••••",
-					},
-				},
-			})
-		end,
-	},
 	-- {
 	--   "luukvbaal/statuscol.nvim",
 	--   config = function()
