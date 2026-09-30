@@ -73,7 +73,7 @@ return {
 		event = "InsertEnter",
 		config = function()
 			require("nvim-autopairs").setup({
-				disable_filetype = { "TelescopePrompt", "vim" },
+				disable_filetype = { "snacks_picker_input", "vim" },
 				enable_check_bracket_line = false,
 				check_ts = true,
 				ts_config = {
@@ -243,15 +243,6 @@ return {
 			vim.g.undotree_TreeReturnShape = "╲"
 			vim.g.undotree_TreeNodeShape = ""
 		end,
-	},
-	{
-		"folke/snacks.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {
-			input = { enabled = true },
-			picker = { enabled = true, ui_select = true },
-		},
 	},
 	-- {
 	--   "luukvbaal/statuscol.nvim",

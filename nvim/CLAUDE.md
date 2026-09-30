@@ -27,7 +27,7 @@ Load order, from `init.lua`:
 
 Plugin specs are split into two layers, both picked up by the `{ import = "plugins" }` spec:
 - `lua/plugins.lua` — a flat list of misc plugin specs (colorscheme, UI, editing, terminal, etc.).
-- `lua/plugins/*.lua` — one file per plugin/feature area (e.g. `telescope.lua`, `treesitter.lua`,
+- `lua/plugins/*.lua` — one file per plugin/feature area (e.g. `snacks.lua`, `treesitter.lua`,
   `neotest.lua`, `dashboard.lua`). Each returns a lazy.nvim spec table (or list of tables).
 - `lua/plugins/lsp/` is the LSP/formatting/linting subsystem:
   - `init.lua` defines `nvim-lspconfig` (with per-server `settings`/`setup` overrides, e.g. `gopls`,

@@ -19,16 +19,7 @@ return {
     map("n", "<leader>d", vim.lsp.buf.definition, { desc = "Go to definition" })
     -- map("n", "<leader>gr", vim.lsp.buf.references)
 		map("n", "<leader>gr", function()
-		  require 'telescope.builtin'.lsp_references {
-		    layout_strategy = "horizontal",
-		    layout_config = {
-		      width = 0.6,
-		      height = 0.5,
-		      prompt_position = "top",
-		    },
-		    sorting_strategy = "ascending",
-		    ignore_filename = false,
-		  }
+			Snacks.picker.lsp_references()
 		end)
 		-- stylua: ignore end
 		-- map("n", ";", vim.lsp.buf.hover)
