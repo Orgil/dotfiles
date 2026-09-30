@@ -55,7 +55,6 @@ return {
 	{ "NvChad/nvim-colorizer.lua", event = { "BufReadPre", "BufNewFile" }, config = true },
 	{ "nacro90/numb.nvim", event = "VeryLazy", config = true },
 	{ "chaoren/vim-wordmotion" },
-	{ "tpope/vim-surround" },
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
