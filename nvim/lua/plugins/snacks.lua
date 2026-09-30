@@ -42,7 +42,10 @@ return {
 			{ "<leader>s", function() Snacks.picker.lsp_symbols() end, desc = "Symbols" },
 		},
 		opts = {
-			input = { enabled = true },
+			input = {
+				enabled = true,
+				win = { keys = { i_esc = { "<esc>", { "cmp_close", "cancel" }, mode = "i", expr = true } } },
+			},
 			dashboard = {
 				preset = {
 					header = table.concat(logo, "\n"),

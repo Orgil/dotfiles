@@ -15,6 +15,7 @@ opt.showtabline = 2
 opt.shiftwidth = 2 -- Size of an indent
 vim.opt.shortmess:append({ W = true, I = true, c = true })
 vim.opt.fillchars:append("fold:•")
+vim.opt.fillchars:append("eob: ")
 -- opt.foldenable = true
 -- opt.foldcolumn = "1"
 opt.foldlevel = 99
