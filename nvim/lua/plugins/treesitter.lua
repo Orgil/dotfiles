@@ -90,4 +90,15 @@ return {
 			})
 		end,
 	},
+	{ -- sticky header of the function/class/block the cursor is inside
+		"nvim-treesitter/nvim-treesitter-context",
+		event = { "BufReadPost", "BufNewFile" },
+		opts = {
+			max_lines = 3,
+			trim_scope = "outer",
+			on_attach = function(buf)
+				return not vim.b[buf].bigfile
+			end,
+		},
+	},
 }
