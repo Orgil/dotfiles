@@ -87,9 +87,7 @@ vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
 		pcall(function()
 			require("ufo").detach(args.buf)
 		end)
-		pcall(function()
-			require("ibl").setup_buffer(args.buf, { enabled = false })
-		end)
+		vim.b[args.buf].snacks_indent = false
 		pcall(function()
 			require("rainbow-delimiters").disable(args.buf)
 		end)

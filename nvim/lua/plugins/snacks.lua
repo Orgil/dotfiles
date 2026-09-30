@@ -14,6 +14,19 @@ local exclude = {
 	"*.svg",
 }
 
+local logo = {
+	[[                                                                       ]],
+	[[                                                                     ]],
+	[[       ████ ██████           █████      ██                     ]],
+	[[      ███████████             █████                             ]],
+	[[      █████████ ███████████████████ ███   ███████████   ]],
+	[[     █████████  ███    █████████████ █████ ██████████████   ]],
+	[[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
+	[[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
+	[[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
+	[[                                                                       ]],
+}
+
 -- dropdown without a preview pane, like the old find_files/buffers dropdown
 local dropdown = { preset = "dropdown", hidden = { "preview" } }
 
@@ -30,6 +43,32 @@ return {
 		},
 		opts = {
 			input = { enabled = true },
+			dashboard = {
+				preset = {
+					header = table.concat(logo, "\n"),
+					keys = {
+					{ icon = " ", key = "n", desc = "New file", action = ":ene | startinsert" },
+					{ icon = " ", key = "f", desc = "Find file", action = ":lua Snacks.picker.files()" },
+					{ icon = "󰮗 ", key = "g", desc = "Find text", action = ":lua Snacks.picker.grep()" },
+					{ icon = " ", key = "c", desc = "Config", action = ":e $MYVIMRC" },
+					{ icon = " ", key = "s", desc = "Restore Session", action = function() require("persistence").load() end },
+					{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+					{ icon = " ", key = "m", desc = "Mason", action = ":Mason" },
+					{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+					},
+				},
+				sections = {
+					{ section = "header" },
+					{ section = "keys", gap = 1, padding = 1 },
+					{ section = "startup" },
+				},
+			},
+			indent = {
+				enabled = true,
+				char = "▏",
+				animate = { enabled = false },
+				scope = { enabled = true, char = "▏", underline = false },
+			},
 			picker = {
 				enabled = true,
 				ui_select = true,
