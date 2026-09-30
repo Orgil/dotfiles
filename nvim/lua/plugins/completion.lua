@@ -1,6 +1,7 @@
 return {
 	{
 		"L3MON4D3/LuaSnip",
+		lazy = true, -- loaded as a dependency of blink.cmp
 		version = "v2.*",
 		build = "make install_jsregexp",
 		config = function()

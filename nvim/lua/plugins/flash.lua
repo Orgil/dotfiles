@@ -29,7 +29,6 @@ end
 return {
 	{
 		"folke/flash.nvim",
-		event = "VeryLazy",
 		opts = {
 			modes = {
 				-- keep plain f/t/F/T and / behaviour, only the <space> maps below use flash

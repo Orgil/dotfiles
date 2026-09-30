@@ -45,12 +45,13 @@ return {
 	{ "folke/lazydev.nvim", ft = "lua" },
 	{ "folke/neoconf.nvim", cmd = "Neoconf" },
 	{ "numToStr/Comment.nvim", config = true },
-	{ "NvChad/nvim-colorizer.lua", config = true },
-	{ "nacro90/numb.nvim", config = true },
+	{ "NvChad/nvim-colorizer.lua", event = { "BufReadPre", "BufNewFile" }, config = true },
+	{ "nacro90/numb.nvim", event = "VeryLazy", config = true },
 	{ "chaoren/vim-wordmotion" },
 	{ "tpope/vim-surround" },
 	{
 		"folke/which-key.nvim",
+		event = "VeryLazy",
 		config = function()
 			vim.o.timeout = true
 			vim.o.timeoutlen = 300
@@ -63,6 +64,7 @@ return {
 	},
 	{
 		"windwp/nvim-autopairs",
+		event = "InsertEnter",
 		config = function()
 			require("nvim-autopairs").setup({
 				disable_filetype = { "TelescopePrompt", "vim" },
@@ -95,6 +97,7 @@ return {
 	},
 	{
 		"windwp/nvim-ts-autotag",
+		event = { "BufReadPre", "BufNewFile" },
 		opts = {
 			enable_close_on_slash = false,
 		},
@@ -194,7 +197,7 @@ return {
 			})
 		end,
 	},
-	{ "lewis6991/gitsigns.nvim", config = true },
+	{ "lewis6991/gitsigns.nvim", event = { "BufReadPre", "BufNewFile" }, config = true },
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
@@ -273,6 +276,7 @@ return {
 	-- },
 	{
 		"towolf/vim-helm",
+		ft = "helm",
 	},
 	{
 		"folke/noice.nvim",
@@ -301,6 +305,7 @@ return {
 	},
 	{
 		"folke/todo-comments.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			require("todo-comments").setup({
 				highlight = {
@@ -315,5 +320,5 @@ return {
 		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
 		config = true,
 	},
-	{ "wakatime/vim-wakatime", lazy = false },
+	{ "wakatime/vim-wakatime", event = "VeryLazy" },
 }

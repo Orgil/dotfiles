@@ -1,6 +1,7 @@
 return {
 	{
 		"lukas-reineke/indent-blankline.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			require("ibl").setup({
 				indent = { char = "▏" },
@@ -17,6 +18,7 @@ return {
 	},
 	{
 		"HiPhish/rainbow-delimiters.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			local rainbow_delimiters = require("rainbow-delimiters")
 			require("rainbow-delimiters.setup").setup({
