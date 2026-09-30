@@ -13,7 +13,7 @@ return {
 			-- },
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			"hrsh7th/cmp-nvim-lsp",
+			"saghen/blink.cmp",
 			-- "jose-elias-alvarez/typescript.nvim",
 			"p00f/clangd_extensions.nvim",
 			{
@@ -223,11 +223,8 @@ return {
 			vim.diagnostic.config(opts.diagnostics)
 
 			local servers = opts.servers
-			local capabilities = vim.tbl_deep_extend(
-				"force",
-				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-				opts.capabilities or {}
-			)
+			local capabilities =
+				require("blink.cmp").get_lsp_capabilities(vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {}))
 
 			local function setup(server)
 				local server_opts = servers[server] or {}

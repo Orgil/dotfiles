@@ -91,21 +91,6 @@ return {
 				},
 				ignored_next_char = "[%w%.%+%-%=%/%,]",
 			})
-			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-			local cmp = require("cmp")
-			cmp.event:on(
-				"confirm_done",
-				cmp_autopairs.on_confirm_done({
-					map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
-					auto_select = true, -- automatically select the first item
-					insert = false, -- use insert confirm behavior instead of replace
-					map_char = {
-						-- modifies the function or method delimiter by filetypes
-						all = "(",
-						tex = "{",
-					},
-				})
-			)
 		end,
 	},
 	{
@@ -315,11 +300,10 @@ return {
 		event = "VeryLazy",
 		opts = {
 			lsp = {
-				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+				-- override markdown rendering so that completion and other plugins use **Treesitter**
 				override = {
 					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 					["vim.lsp.util.stylize_markdown"] = true,
-					["cmp.entry.get_documentation"] = true,
 				},
 			},
 			-- you can enable a preset for easier configuration

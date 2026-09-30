@@ -55,7 +55,7 @@ Formatting/linting wiring (`lua/plugins/lsp/init.lua`):
   available through Mason.
 
 `snippets/` holds per-language snippet JSON (consumed by the completion/snippet plugin configured in
-`lua/plugins/cmp.lua`).
+`lua/plugins/completion.lua`).
 
 Leader key is `,` (set in `lua/mappings.lua`). Many LSP-related mappings (go to definition, references,
 rename, code actions) live in `lua/plugins/lsp/keymaps.lua` rather than `lua/mappings.lua` because they
