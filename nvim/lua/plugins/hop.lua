@@ -1,13 +1,33 @@
 return {
 	{
-		"phaazon/hop.nvim",
-		branch = "v2", -- optional but strongly recommended
+		"smoka7/hop.nvim",
+		version = "*",
 		keys = {
-			{ "<space>w", "<cmd>lua require'hop'.hint_words()<cr>" },
-			{ "<space>b", "<cmd>lua require'hop'.hint_words()<cr>" },
+			{
+				"<space>w",
+				function()
+					require("hop").hint_words({ direction = require("hop.hint").HintDirection.AFTER_CURSOR })
+				end,
+			},
+			{
+				"<space>b",
+				function()
+					require("hop").hint_words({ direction = require("hop.hint").HintDirection.BEFORE_CURSOR })
+				end,
+			},
 			{ "<space>s", "<cmd>lua require'hop'.hint_char1()<cr>" },
-			{ "<space>j", "<cmd>lua require'hop'.hint_lines()<cr>" },
-			{ "<space>k", "<cmd>lua require'hop'.hint_lines()<cr>" },
+			{
+				"<space>j",
+				function()
+					require("hop").hint_lines({ direction = require("hop.hint").HintDirection.AFTER_CURSOR })
+				end,
+			},
+			{
+				"<space>k",
+				function()
+					require("hop").hint_lines({ direction = require("hop.hint").HintDirection.BEFORE_CURSOR })
+				end,
+			},
 		},
 		opts = {
 			keys = "etovxqpdygfblzhckisuran",

@@ -266,7 +266,7 @@ return {
 	},
 	{
 		"anuvyklack/pretty-fold.nvim",
-		lazy = true,
+		event = "VeryLazy",
 		config = function()
 			require("pretty-fold").setup({
 				keep_indentation = true,
