@@ -76,6 +76,8 @@ return {
 				enabled = true,
 				ui_select = true,
 				prompt = " ❯ ",
+				-- close straight from insert mode instead of dropping to normal mode first
+				win = { input = { keys = { ["<Esc>"] = { "close", mode = { "n", "i" } } } } },
 				sources = {
 					files = { hidden = true, exclude = exclude, layout = dropdown },
 					grep = { hidden = true, exclude = exclude, args = { "--trim" } },
