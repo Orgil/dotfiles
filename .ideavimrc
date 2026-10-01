@@ -129,10 +129,13 @@ map <leader>w :w<CR>
 map ; <Action>(ShowErrorDescription)
 
 nmap <leader>aa <Action>(ShowIntentionActions)
+vmap <leader>aa <Action>(ShowIntentionActions)
 nmap <leader>an <Action>(ReSharperNavigateTo)
 nmap <leader>ai <Action>(InspectThis)
 nmap <leader>ar <Action>(Refactorings.QuickListPopupAction)
+vmap <leader>ar <Action>(Refactorings.QuickListPopupAction)
 nmap <leader>ag <Action>(Generate)
+
 nmap <leader><leader> :action Switcher<CR>
 
 map [[ <Action>(GotoPreviousError)
@@ -164,6 +167,7 @@ nmap <leader>d <Action>(GotoDeclaration)
 nmap <leader>gy <Action>(GotoTypeDeclaration)
 nmap <leader>gi <Action>(GotoImplementation)
 nmap <leader>u <Action>(ShowUsages)
+nmap <leader>gu <Action>(FindUsages)
 nmap <leader>gt <Action>(GotoTest)
 nmap <leader>gf <Action>(Back)
 nmap <leader>gb <Action>(Forward)
