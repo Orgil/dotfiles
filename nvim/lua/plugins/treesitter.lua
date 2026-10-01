@@ -55,6 +55,7 @@ local parsers = {
 return {
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
 		version = false,
 		lazy = false,
 		build = ":TSUpdate",
