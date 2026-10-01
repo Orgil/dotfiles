@@ -25,9 +25,6 @@ return {
 		-- map("n", ";", vim.lsp.buf.hover)
 		map("n", "<leader>gi", vim.lsp.buf.implementation)
 		map("n", "<leader>k", vim.lsp.buf.signature_help)
-		map("n", ";", function()
-			vim.diagnostic.open_float()
-		end)
 		-- map("n", "<leader>gd", vim.lsp.buf.d, { desc = "Documentation" })
 
 		-- map("n", "<space>wa", vim.lsp.buf.add_workspace_folder)
