@@ -213,7 +213,15 @@ return {
 			})
 		end,
 	},
-	{ "lewis6991/gitsigns.nvim", event = { "BufReadPre", "BufNewFile" }, config = true },
+	{
+		"lewis6991/gitsigns.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		keys = {
+			{ "<leader>gb", function() require("gitsigns").blame_line({ full = true }) end, desc = "Git blame line" },
+			{ "<leader>gB", "<cmd>Gitsigns blame<cr>", desc = "Git blame file" },
+		},
+		config = true,
+	},
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
