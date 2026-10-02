@@ -17,10 +17,9 @@ return {
     map("n", "<leader>gt", vim.lsp.buf.type_definition)
     map("n", "<leader>gd", vim.lsp.buf.declaration, { desc = "Go to declaration" })
     map("n", "<leader>d", vim.lsp.buf.definition, { desc = "Go to definition" })
-    -- map("n", "<leader>gr", vim.lsp.buf.references)
-		map("n", "<leader>gr", function()
+		map("n", "<leader>u", function()
 			Snacks.picker.lsp_references()
-		end)
+		end, { desc = "Usages" })
 		-- stylua: ignore end
 		-- map("n", ";", vim.lsp.buf.hover)
 		map("n", "<leader>gi", vim.lsp.buf.implementation)
